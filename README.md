@@ -36,6 +36,7 @@ coding!
 
 - Anita Boakye-Yiadom: [GitHub](https://github.com/AnitaBoakye) / [LinkedIn](https://www.linkedin.com/in/anitaboakyeyiadom/)
 - Ruslan Berendeev: [GitHub](https://github.com/rusbers) / [LinkedIn](https://www.linkedin.com/in/ruslan-berendeev/)
+- Isaac Anim: [Github](https://github.com/yawcoder) / [LinkedIn](https://www.linkedin.com/in/yawcoder)
 
    ...
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
