@@ -38,4 +38,5 @@ coding!
 - Ruslan Berendeev: [GitHub](https://github.com/rusbers) / [LinkedIn](https://www.linkedin.com/in/ruslan-berendeev/)
 - Isaac Anim: [Github](https://github.com/yawcoder) / [LinkedIn](https://www.linkedin.com/in/yawcoder)
 - Micaela Opoku-Mensah: [GitHub](https://github.com/mickeymic25) / [LinkedIn](https://www.linkedin.com/in/micaela-opoku-mensah/)
-- Oluyemi Adebayo Esho: [GitHub](https://github.com/yemiesho) / [LinkedIn](https://:www.linkedin.com/in/oluyemi-adebayo-esho/)   
+- Oluyemi Adebayo Esho: [GitHub](https://github.com/yemiesho) / [LinkedIn](https://:www.linkedin.com/in/oluyemi-adebayo-esho/)  
+- Joseph Justin Opoku Mensah: [GitHub](https://github.com/justinjoe) / [LinkedIn](https://www.linkedin.com/in/josephjustin-om/)
