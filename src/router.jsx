@@ -1,11 +1,13 @@
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import WelcomePage from "./components/Welcome-Page";
+WelcomePage;
 
 export const router = createBrowserRouter([
   {
     path: "/",
     errorElement: <h1>Error Page</h1>,
     children: [
-      { index: true, element: <h1>Welcome Page</h1> },
+      { index: true, element: <WelcomePage /> },
       {
         element: <Outlet />,
         children: [
@@ -34,8 +36,16 @@ export const router = createBrowserRouter([
                   {
                     path: ":groupId",
                     children: [
-                      { index: true, element: <h1>Dynamic Expense Group Page</h1> },
-                      { path: "edit", element: <h1>Dynamic Page for Editing an Expense Group</h1> },
+                      {
+                        index: true,
+                        element: <h1>Dynamic Expense Group Page</h1>,
+                      },
+                      {
+                        path: "edit",
+                        element: (
+                          <h1>Dynamic Page for Editing an Expense Group</h1>
+                        ),
+                      },
                     ],
                   },
                 ],
@@ -51,4 +61,4 @@ export const router = createBrowserRouter([
     ],
   },
   { path: "*", element: <h1>404 Page</h1> },
-])
+]);
