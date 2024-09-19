@@ -1,4 +1,5 @@
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
+import { createBrowserRouter, Navigate } from "react-router-dom"
+import AppLayout from "./pages/layouts/AppLayout"
 
 export const router = createBrowserRouter([
   {
@@ -7,7 +8,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <h1>Welcome Page</h1> },
       {
-        element: <Outlet />,
+        element: <AppLayout />,
         children: [
           {
             path: "/app",
