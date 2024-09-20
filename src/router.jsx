@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom"
 import AppLayout from "./pages/layouts/AppLayout"
+import WelcomePage from "./pages/Welcome-Page"
 import { ExpenseGroupPage } from "./pages/ExpenseGroupPage"
 import { ExpenseGroupEditPage } from "./pages/ExpenseGroupEditPage"
 import { ExpenseGroupsPage } from "./pages/ExpenseGroupsPage"
@@ -13,7 +14,7 @@ export const router = createBrowserRouter([
     path: "/",
     errorElement: <RootErrorPage />,
     children: [
-      { index: true, element: <h1>Welcome Page</h1> },
+      { index: true, element: <WelcomePage /> },
       {
         element: <AppLayout />,
         children: [
