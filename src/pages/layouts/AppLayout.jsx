@@ -9,7 +9,6 @@ export default function AppLayout() {
   const isDesktop = useMediaQuery("(min-width: 1024px)")
   const navbarRef = useRef()
   const [navbarHeight, setNavbarHeight] = useState(0)
-  const sidebarWidth = 80
 
   useEffect(() => {
     if (navbarRef.current) {
@@ -22,14 +21,14 @@ export default function AppLayout() {
       {isDesktop ? (
         <div className="fixed top-0 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto container mx-auto pointer-events-none">
           <AppSidenav
-            className={`pointer-events-auto absolute top-0 left-0 h-screen border-r w-${sidebarWidth} overflow-y-auto`}
+            className={`pointer-events-auto absolute top-0 left-0 h-screen border-r w-80 overflow-y-auto`}
           />
         </div>
       ) : (
         <AppTopnav ref={navbarRef} />
       )}
       <div
-        className={`flex flex-col flex-grow lg:ml-${sidebarWidth} lg:pt-0`}
+        className={`flex flex-col flex-grow lg:ml-80 lg:pt-0`}
         style={!isDesktop ? { paddingTop: `${navbarHeight}px` } : { paddingTop: 0 }}
       >
         <main className="flex-1 px-4 overflow-y-auto py-4">
