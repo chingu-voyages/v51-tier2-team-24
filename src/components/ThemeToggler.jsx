@@ -12,5 +12,5 @@ export function ThemeToggler({ className }) {
 }
 
 ThemeToggler.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
 }
