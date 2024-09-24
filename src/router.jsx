@@ -1,5 +1,5 @@
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
-import WelcomePage from "./pages/Welcome-Page";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
+import WelcomePage from "./pages/Welcome-Page"
 
 export const router = createBrowserRouter([
   {
@@ -41,9 +41,7 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "edit",
-                        element: (
-                          <h1>Dynamic Page for Editing an Expense Group</h1>
-                        ),
+                        element: <h1>Dynamic Page for Editing an Expense Group</h1>,
                       },
                     ],
                   },
@@ -53,6 +51,10 @@ export const router = createBrowserRouter([
                 path: "friends",
                 element: <h1>Friends List Page</h1>,
               },
+              {
+                path: "first-group",
+                element: <h1>First Group Page</h1>,
+              },
             ],
           },
         ],
@@ -60,4 +62,4 @@ export const router = createBrowserRouter([
     ],
   },
   { path: "*", element: <h1>404 Page</h1> },
-]);
+])
