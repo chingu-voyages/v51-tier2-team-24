@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
 import WelcomePage from "./pages/Welcome-Page"
+import { FirstGroupPage } from "./pages/FirstGroupPage"
 
 export const router = createBrowserRouter([
   {
@@ -53,7 +54,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "first-group",
-                element: <h1>First Group Page</h1>,
+                element: <FirstGroupPage />,
               },
             ],
           },
