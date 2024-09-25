@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom"
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
 import AppLayout from "./pages/layouts/AppLayout"
 import WelcomePage from "./pages/Welcome-Page"
 import { ExpenseGroupPage } from "./pages/ExpenseGroupPage"
@@ -8,7 +8,6 @@ import { FriendsPage } from "./pages/FriendsPage"
 import { ExpenseGroupsNewPage } from "./pages/ExpenseGroupsNewPage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import RootErrorPage from "./pages/RootErrorPage"
-import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
 
 export const router = createBrowserRouter([
