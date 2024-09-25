@@ -1,14 +1,24 @@
+import { createBrowserRouter, Navigate } from "react-router-dom"
+import AppLayout from "./pages/layouts/AppLayout"
+import WelcomePage from "./pages/Welcome-Page"
+import { ExpenseGroupPage } from "./pages/ExpenseGroupPage"
+import { ExpenseGroupEditPage } from "./pages/ExpenseGroupEditPage"
+import { ExpenseGroupsPage } from "./pages/ExpenseGroupsPage"
+import { FriendsPage } from "./pages/FriendsPage"
+import { ExpenseGroupsNewPage } from "./pages/ExpenseGroupsNewPage"
+import { NotFoundPage } from "./pages/NotFoundPage"
+import RootErrorPage from "./pages/RootErrorPage"
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
 import Dashboard from "./pages/Dashboard"
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    errorElement: <h1>Error Page</h1>,
+    errorElement: <RootErrorPage />,
     children: [
-      { index: true, element: <h1>Welcome Page</h1> },
+      { index: true, element: <WelcomePage /> },
       {
-        element: <Outlet />,
+        element: <AppLayout />,
         children: [
           {
             path: "/app",
@@ -26,24 +36,24 @@ export const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: <h1>Groups List Page</h1>,
+                    element: <ExpenseGroupsPage />,
                   },
                   {
                     path: "new",
-                    element: <h1>New Expense Group Page</h1>,
+                    element: <ExpenseGroupsNewPage />,
                   },
                   {
                     path: ":groupId",
                     children: [
-                      { index: true, element: <h1>Dynamic Expense Group Page</h1> },
-                      { path: "edit", element: <h1>Dynamic Page for Editing an Expense Group</h1> },
+                      { index: true, element: <ExpenseGroupPage /> },
+                      { path: "edit", element: <ExpenseGroupEditPage /> },
                     ],
                   },
                 ],
               },
               {
                 path: "friends",
-                element: <h1>Friends List Page</h1>,
+                element: <FriendsPage />,
               },
             ],
           },
@@ -51,5 +61,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  { path: "*", element: <h1>404 Page</h1> },
+  { path: "*", element: <NotFoundPage /> },
 ])
