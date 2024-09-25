@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { defineStepper } from "@stepperize/react"
-import { Check, Percent, Plus } from "lucide-react"
+import { Check, ImageOff, Percent, Plus, ZoomIn, X as Delete } from "lucide-react"
 import React from "react"
 import PropTypes from "prop-types"
 import { Input } from "@/components/ui/input"
@@ -46,9 +46,9 @@ const { useStepper, Scoped, steps } = defineStepper(
   },
   {
     id: "last",
-    title: "Final step! Let's summarize",
+    title: "You're Almost There! Finalize Your Group Setup",
     description:
-      "Review the details and finalize the group setup. You'll be able to track and manage the group's expenses from the dashboard.",
+      "Review the details and finalize the group setup. You'll be able to see insights like balances and statistics, and manage the expense group from the dashboard.",
   }
 )
 
@@ -83,6 +83,49 @@ const EXPENSE_CATEGORIES = [
 
 const CONTRIBUTION_WEIGHTS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
+const PARTICIPANTS_MOCK_DATA = [
+  { firstName: "John", lastName: "Smith", avatarUrl: "#", id: "some_random-id_1" },
+  { firstName: "Thomas", lastName: "Edison", avatarUrl: "#", id: "some_random-id_2" },
+  { firstName: "Mickael", lastName: "Jackson", avatarUrl: "#", id: "some_random-id_3" },
+  { firstName: "Darren", lastName: "McGregor", avatarUrl: "#", id: "some_random-id_3" },
+]
+
+const EXPENSES_MOCK_DATA = [
+  {
+    name: "Office Supplies",
+    description: "Purchased office supplies including pens, notebooks, and printer ink.",
+    category: "Office",
+    amount: 150,
+    purchaser: "John Doe",
+    contributionWeight: 10,
+    date: new Date(),
+    receiptUrl: "https://picsum.photos/seed/picsum/1080/1350",
+    id: "some_unique_id_1",
+  },
+  {
+    name: "Team Lunch",
+    description: "Team lunch at a local restaurant to celebrate project completion.",
+    category: "Entertainment",
+    amount: 300,
+    purchaser: "Jane Smith",
+    contributionWeight: 20,
+    date: new Date(),
+    receiptUrl: null,
+    id: "some_unique_id_2",
+  },
+  {
+    name: "Software Subscription",
+    description: "Annual subscription for project management software.",
+    category: "Software",
+    amount: 1200,
+    purchaser: "Alice Johnson",
+    contributionWeight: 50,
+    date: new Date(),
+    receiptUrl: "https://picsum.photos/seed/picsum/1080/1350",
+    id: "some_unique_id_3",
+  },
+]
+
 export function FirstGroupPage() {
   return (
     <Scoped>
@@ -92,7 +135,6 @@ export function FirstGroupPage() {
         </h1>
         <Steps />
         <StepActions className="hidden lg:flex" />
-        <LastStep />
       </div>
     </Scoped>
   )
@@ -240,7 +282,7 @@ const StepActions = ({ className, isWithinForm = false }) => {
   )
 }
 
-// === CONTENT COMPONENTS FOR EACH STEP ===
+// === STEPS CONTENT ===
 
 const AddGroupDetailsStep = ({ includeActions = false }) => {
   const stepper = useStepper()
@@ -401,31 +443,8 @@ const AddExpensesStep = ({ includeActions = false }) => {
   )
 }
 
-const PARTICIPANTS_MOCK_DATA = [
-  { firstName: "John", lastName: "Smith", avatarUrl: "#", id: "some_random-id_1" },
-  { firstName: "Thomas", lastName: "Edison", avatarUrl: "#", id: "some_random-id_2" },
-  { firstName: "Mickael", lastName: "Jackson", avatarUrl: "#", id: "some_random-id_3" },
-  { firstName: "Darren", lastName: "McGregor", avatarUrl: "#", id: "some_random-id_3" },
-]
-
-const EXPENSES_MOCK_DATA = [
-  {
-    name: "Expense 1",
-    description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, architecto.",
-    category: "category name",
-    amount: 2000,
-    purchaser: "Name1 Surname1",
-    contributionWeight: 10,
-    date: new Date(),
-    receiptUrl: "https://picsum.photos/seed/picsum/1080/1350",
-    id: "some_unique_id_1",
-  },
-]
-
 const LastStep = ({ includeActions = false }) => {
   const stepper = useStepper()
-  // TODO should be moved to individual balance card
-  // const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   return (
     <div className="mt-4 space-y-10">
@@ -458,93 +477,117 @@ const LastStep = ({ includeActions = false }) => {
 
       <section>
         <h2 className="mb-6 font-bold text-xl">Particpants</h2>
-        <ul className="space-y-2">
+        <ul className="flex gap-4 flex-wrap items-center">
           {PARTICIPANTS_MOCK_DATA.map((participant) => (
-            <li
-              key={participant.id}
-              className="flex gap-2 items-center capitalize active:opacity-50"
-            >
-              <Avatar className="size-8">
-                <AvatarImage src="#" />
-                {/* To use getInitials utility function ofter the Layout PR is merged */}
-                <AvatarFallback className="bg-slate-300 text-foreground dark:text-secondary">
-                  CN
-                </AvatarFallback>
-              </Avatar>
-              <span className="font-bold">{`${participant.firstName} ${participant.lastName}`}</span>
+            <li key={participant.id} className="flex gap-2 items-center capitalize">
+              <Card className="p-2 flex gap-2 items-center">
+                <Avatar className="size-8">
+                  <AvatarImage src="#" />
+                  <AvatarFallback className="bg-slate-300 text-foreground dark:text-secondary">
+                    CN
+                  </AvatarFallback>
+                </Avatar>
+                <p className="font-bold leading-none">{`${participant.firstName} ${participant.lastName}`}</p>
+                <Button disabled size="icon" variant="ghost" className="rounded-full group">
+                  <span className="sr-only">delete</span>
+                  <Delete className="size-4 group-hover:text-red-600" />
+                </Button>
+              </Card>
             </li>
           ))}
         </ul>
       </section>
 
-      <section>
-        <h2 className="font-bold text-xl mb-6">Expenses</h2>
-
-        <div>
-          {EXPENSES_MOCK_DATA ? (
-            <Accordion type="single" collapsible>
-              {EXPENSES_MOCK_DATA.map((expense) => (
-                <AccordionItem
-                  key={expense.id}
-                  className="bg-slate-100 dark:bg-secondary border-b"
-                  value={expense.id}
-                >
-                  <AccordionTrigger className="px-4 py-2 text-lg hover:no-underline flex">
-                    <div className="flex flex-col items-start">
-                      <div className="flex items-center gap-2">
-                        <div className="category-icon-placeholder size-4 bg-black rounded-full"></div>
-                        <p className="hover:text-primary transition delay-100">{expense.name}</p>
-                      </div>
-                      <span className="pointer-events-none font-normal text-sm" aria-hidden>
-                        Jan 16th {/* TODO to install date-fns for formatting dates */}
-                      </span>
+      {EXPENSES_MOCK_DATA ? (
+        <section>
+          <h2 className="font-bold text-xl mb-6">Expenses</h2>
+          <Accordion type="single" collapsible>
+            {EXPENSES_MOCK_DATA.map((expense) => (
+              <AccordionItem
+                key={expense.id}
+                className="bg-slate-100 dark:bg-secondary border-b"
+                value={expense.id}
+              >
+                <AccordionTrigger className="px-4 py-2 text-lg hover:no-underline flex">
+                  <div className="flex flex-col items-start">
+                    <div className="flex items-center gap-2">
+                      <div className="category-icon-placeholder size-4 bg-black rounded-full shrink-0"></div>
+                      <p className="hover:text-primary transition delay-100 text-start">
+                        {expense.name}
+                      </p>
                     </div>
-                    <span className="font-normal ml-auto self-start px-4 text-sm" aria-hidden>
-                      {formatCurrency(expense.amount)}
+                    <span className="pointer-events-none font-normal text-sm" aria-hidden>
+                      Jan 16th
                     </span>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-4 py-6 flex flex-col gap-4 border-t">
-                    <div className="description-list">
-                      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
-                        <dt>Description</dt>
-                        <dd>{expense.description}</dd>
-                        <dt>Category</dt>
-                        <dd>{expense.category}</dd>
-                        <dt>Amount</dt>
-                        <dd>{formatCurrency(expense.amount)}</dd>
-                        <dt>Purchaser</dt>
-                        <dd>{expense.purchaser}</dd>
-                        <dt>Contribution Weight</dt>
-                        <dd>{expense.contributionWeight}</dd>
-                        <dt>Purchase date</dt>
-                        <dd>23 Jan 2024 {/* The actual date will be formated with date-fns */}</dd>
-                      </dl>
-                    </div>
-                    <div className="receipt-container w-full sm:w-3/4 md:max-w-[30%] h-full bg-slate-200 p-2 self-center">
-                      <AspectRatio className="flex items-center justify-center" ratio={4 / 3}>
-                        {expense.receiptUrl ? (
+                  </div>
+                  <span className="font-normal ml-auto self-start px-4 text-sm" aria-hidden>
+                    {formatCurrency(expense.amount)}
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 py-6 flex flex-col gap-4 border-t md:flex-row">
+                  <div className="description-list">
+                    <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 [&>dt]:font-bold">
+                      <dt>Description</dt>
+                      <dd>{expense.description}</dd>
+                      <dt>Category</dt>
+                      <dd>{expense.category}</dd>
+                      <dt>Amount</dt>
+                      <dd>{formatCurrency(expense.amount)}</dd>
+                      <dt>Purchaser</dt>
+                      <dd>{expense.purchaser}</dd>
+                      <dt>Contribution Weight</dt>
+                      <dd>{expense.contributionWeight}%</dd>
+                      <dt>Purchase date</dt>
+                      <dd>23 Jan 2024 {/* The actual date will be formated with date-fns */}</dd>
+                    </dl>
+                  </div>
+                  <div className="receipt-container w-full h-full max-w-[22.5rem] sm:w-3/4 bg-slate-200 p-2 self-center md:self-auto md:-order-1 relative">
+                    <AspectRatio className="flex items-center justify-center" ratio={4 / 3}>
+                      {expense.receiptUrl ? (
+                        <>
                           <img
-                            className="h-full object-contain w-full flex"
+                            className="h-full w-full object-contain flex"
                             src={expense.receiptUrl}
                             alt="lorem ipsum"
                           />
-                        ) : (
-                          // TODO to add image icon
-                          <p>No receipt was uploaded</p>
-                        )}
-                      </AspectRatio>
-                      {/* TODO to add loup icon  on click open a modal/ drawer*/}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          ) : (
-            <div>No expenses added yet</div>
-          )}
-        </div>
-      </section>
-
+                          <Button
+                            className="rounded-full absolute bottom-0 right-4"
+                            variant="outline"
+                            size="icon"
+                            disabled
+                          >
+                            <span className="sr-only">Open image</span>
+                            <ZoomIn className="size-6" />
+                          </Button>
+                        </>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center w-full h-full bg-slate-300 rounded">
+                          <div className="size-16 mb-4 bg-slate-400 rounded-full flex items-center justify-center">
+                            <ImageOff className="size-6" />
+                          </div>
+                          <p className="text-slate-600 font-medium mb-1">No Receipt Uploaded</p>
+                          <p className="text-slate-500 text-sm mb-4">
+                            Upload an image to view the receipt
+                          </p>
+                          <form
+                            className="max-w-[80%] flex gap-2 items-center"
+                            onSubmit={(event) => event.preventDefault()}
+                          >
+                            <Input disabled type="file" placeholder="test" />
+                            <Button disabled size="sm" variant="secondary" type="submit">
+                              Upload
+                            </Button>
+                          </form>
+                        </div>
+                      )}
+                    </AspectRatio>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+      ) : null}
       {includeActions && <StepActions />}
     </div>
   )
