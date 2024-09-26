@@ -35,7 +35,7 @@ export function ExpensesList({ expenses }) {
                 tag="span"
                 aria-hidden
               >
-                Jan 16th
+                {expense.date.getFullYear()}
               </BodyText>
             </div>
             <BodyText
