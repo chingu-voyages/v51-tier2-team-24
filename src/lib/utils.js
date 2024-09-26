@@ -18,3 +18,12 @@ export function totalExpenses(array){
   });
   return total;
 }
+
+export function formatCurrency(number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: number % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(number)
+}
