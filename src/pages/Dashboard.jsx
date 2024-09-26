@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 import { CircleDollarSign, Group, UsersRound } from 'lucide-react';
-import { cn, getInitials } from "@/lib/utils"
+import { cn, getInitials, totalExpenses } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavLink } from 'react-router-dom';
 
@@ -17,12 +17,19 @@ const LAST_THREE_GROUPS = MOCK_GROUP_INFO.slice(-3);
 
 
 const MOCK_EXPENSES = [
-    {expenseName: "Plane tickets to Hawaii", group: "Hawaii Trip", amount: 150, id: "expense_id_1"},
-    {expenseName: "Hotel for Bali", group: "Bali Trip", amount: 150, id: "expense_id_2"},
-    {expenseName: "Beer for John's Birthday", group: "John's Birthday", amount: 150, id: "expense_id_3"},
-    {expenseName: "BBQ for Mike's Birthday", group: "Mike's Birthday", amount: 150, id: "expense_id_4"},
-    {expenseName: "Escape Room Entry fee", group: "Escape Room", amount: 150, id: "expense_id_5"},
+    {name: "Plane tickets to Hawaii", group: "Hawaii Trip", amount: 150, id: "expense_id_1", date: new Date('2024-01-02')},
+    {name: "Hotel for Bali", group: "Bali Trip", amount: 150, id: "expense_id_2", date: new Date('2024-08-23')},
+    {name: "Beer for John's Birthday", group: "John's Birthday", amount: 150, id: "expense_id_3", date: new Date('2024-05-18')},
+    {name: "BBQ for Mike's Birthday", group: "Mike's Birthday", amount: 150, id: "expense_id_4", date: new Date('2024-06-30')},
+    {name: "Escape Room Entry fee", group: "Escape Room", amount: 150, id: "expense_id_5", date: new Date('2024-02-24')},
 ]
+
+//Sorting expenses by date
+const SORTED_MOCK_EXPENSES = MOCK_EXPENSES.sort((a,b) => b.date - a.date);
+
+//Last 3 expenses
+const LAST_THREE_EXPENSES = SORTED_MOCK_EXPENSES.slice(-3);
+
 
 
 
@@ -46,13 +53,17 @@ function Dashboard() {
                     </CardHeader>
                 </Card>
                 <Card className="w-full mt-4">
-                    <CardHeader>
+                    <CardHeader className="flex flex-row">
                         <CircleDollarSign />
+                        <h1 className="flex flex-col">
+                            <span>Total Expenses</span>
+                            <span>{totalExpenses(MOCK_EXPENSES)}</span>
+                        </h1>
                     </CardHeader>
                 </Card>
             </section>
             <section>
-                <h1 className="text-2xl md:text-5xl">Group Expense Overview</h1>
+                <h1 className="text-2xl md:text-5xl mt-10 mb-5">Group Expense Overview</h1>
                 {
                     LAST_THREE_GROUPS.map((group) => {
                         return (
@@ -80,8 +91,22 @@ function Dashboard() {
                 }
             </section>
             <section>
-                <h1 className="text-2xl md:text-5xl">Latest Expenses</h1>
-
+                <h1 className="text-2xl md:text-5xl mt-10 mb-5">Latest Expenses</h1>
+                {
+                    LAST_THREE_EXPENSES.map((expense) => {
+                        return (
+                            <Card key={expense.id} className="flex flex-row justify-between">
+                                <CardHeader className="">
+                                    <span>{expense.name}</span>
+                                    <span>{expense.date.getFullYear()}-0{expense.date.getMonth() + 1}-{expense.date.getDate()}</span>
+                                </CardHeader>
+                                <CardContent className="mt-6">
+                                    ${expense.amount}
+                                </CardContent>
+                            </Card>
+                        )
+                    })
+                }
             </section>
         </div>
     )
