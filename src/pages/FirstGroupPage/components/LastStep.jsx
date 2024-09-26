@@ -23,9 +23,11 @@ export function LastStep({ includeActions = false }) {
       </div>
 
       <GroupInfoWidget
-        groupName="Bali Trip"
-        description="Lorem ipsum dolor sit amet consectetur."
-        amount={5000}
+        groupInfo={{
+          groupName: "Bali Trip",
+          description: "Lorem ipsum dolor sit amet consectetur.",
+          amount: 5000,
+        }}
       />
 
       <section>
