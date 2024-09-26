@@ -12,7 +12,7 @@ export const AppTopnav = forwardRef(({ className }, ref) => {
     <header
       ref={ref}
       className={cn(
-        "min-h-16 p-4 md:flex md:items-center fixed inset-x-0 top-0 bg-white/60 backdrop-blur-lg transition-all border-b",
+        "min-h-16 p-4 md:flex md:items-center fixed inset-x-0 top-0 bg-white/60 backdrop-blur-lg transition-all border-b z-50",
         className
       )}
     >

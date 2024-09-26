@@ -9,7 +9,8 @@ import { ExpenseGroupsNewPage } from "./pages/ExpenseGroupsNewPage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import RootErrorPage from "./pages/RootErrorPage"
 import Dashboard from "./pages/Dashboard"
-import { FirstGroupPage } from "./pages/FirstGroupPage"
+import { FirstGroupPage } from "./pages/FirstGroupPage/FirstGroupPage"
+import { FirstGroupPageContextProvider } from "./pages/FirstGroupPage/context/FirstGroupPageContext"
 
 export const router = createBrowserRouter([
   {
@@ -57,7 +58,11 @@ export const router = createBrowserRouter([
               },
               {
                 path: "first-group",
-                element: <FirstGroupPage />,
+                element: (
+                  <FirstGroupPageContextProvider>
+                    <FirstGroupPage />
+                  </FirstGroupPageContextProvider>
+                ),
               },
             ],
           },
