@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react"
 import PropTypes from "prop-types"
 import { cn } from "@/lib/utils"
 import { forwardRef, useState } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
@@ -65,6 +66,27 @@ export function ExpenseGroupPage() {
           </Popover>
         }
       />
+
+      <Tabs defaultValue="balances" className="w-full">
+        <TabsList className="w-full">
+          <TabsTrigger className="w-full" value="balances">
+            Balances
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="statistics">
+            Statistics
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="participants">
+            Participants
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="receipts">
+            Receipts
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="balances">Balances content</TabsContent>
+        <TabsContent value="statistics">Statistics content</TabsContent>
+        <TabsContent value="participants">Participants content</TabsContent>
+        <TabsContent value="receipts">Receipts content </TabsContent>
+      </Tabs>
     </>
   )
 }
