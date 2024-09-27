@@ -1,13 +1,13 @@
 import { cn, getNameDetails } from "@/lib/utils"
 import PropTypes from "prop-types"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { BodyText } from "./Typography"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { Pencil } from "lucide-react"
 
-export function GridCard({ name, avatarUrl, actions, content, className }) {
+export function GridCard({ name, avatarUrl, actions, content, footer, className }) {
   const { fullName, initials } = getNameDetails(name)
 
   return (
@@ -40,6 +40,7 @@ export function GridCard({ name, avatarUrl, actions, content, className }) {
         </div>
       </CardHeader>
       <CardContent className="p-0">{content}</CardContent>
+      <CardFooter className="p-0">{footer}</CardFooter>
     </Card>
   )
 }
@@ -56,6 +57,7 @@ GridCard.propTypes = {
   actions: PropTypes.node,
   content: PropTypes.node.isRequired,
   className: PropTypes.string,
+  footer: PropTypes.node,
 }
 
 export default GridCard
