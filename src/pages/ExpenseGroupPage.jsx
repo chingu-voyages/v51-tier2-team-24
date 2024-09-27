@@ -3,12 +3,12 @@ import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { useParams } from "react-router-dom"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { ChevronDown, Plus, Minus } from "lucide-react"
+import { ChevronDown, Plus, Minus, Pencil } from "lucide-react"
 import PropTypes from "prop-types"
 import { cn, formatCurrency } from "@/lib/utils"
 import { forwardRef, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BodyText } from "@/components/Typography"
@@ -72,7 +72,7 @@ export function ExpenseGroupPage() {
         }
       />
 
-      <Tabs defaultValue="balances" className="w-full">
+      <Tabs defaultValue="participants" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="balances">
             Balances
@@ -91,13 +91,16 @@ export function ExpenseGroupPage() {
           <Balances />
         </TabsContent>
         <TabsContent value="statistics">Statistics content</TabsContent>
-        <TabsContent value="participants">Participants content</TabsContent>
+        <TabsContent value="participants">
+          <FriendsList />
+        </TabsContent>
         <TabsContent value="receipts">Receipts content </TabsContent>
       </Tabs>
     </>
   )
 }
 
+// TODO rename to CardAction
 const Action = forwardRef(({ children, className, isResponsive, ...rest }, ref) => (
   <Button
     {...rest}
@@ -222,6 +225,116 @@ const BalanceBadge = ({ amount }) => {
       &nbsp;
       {isBalanceZero ? amount : formatCurrency(Math.abs(amount))}
     </Badge>
+  )
+}
+
+const FriendsList = () => {
+  return (
+    <div className="pt-4 flex flex-col">
+      <Button className="mb-6 self-end">Add Participant</Button>
+      <FriendsGrid tag="ul">
+        {PARTICIPANTS_MOCK_DATA.map((participant, index) => (
+          <li key={index}>
+            <FriendCard
+              firstName={participant.firstName}
+              lastName={participant.lastName}
+              avatarUrl={null}
+              actions={
+                <>
+                  <Action onClick={() => console.log("add expense")} className="border-current">
+                    Add Expense
+                  </Action>
+                  <Action
+                    onClick={() => console.log("remove from group")}
+                    className="border-red-600 text-red-600 hover:bg-red-100"
+                  >
+                    Remove <span className="sr-only">from group</span>
+                  </Action>
+                </>
+              }
+              content={
+                <>
+                  <BodyText
+                    tag="dl"
+                    className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 [&>dt]:font-medium mb-2"
+                  >
+                    <dt>Spent</dt>
+                    <dd>{formatCurrency(3000)}</dd>
+                    <dt>Contribution Weight</dt>
+                    <dd>10%</dd>
+                  </BodyText>
+                  <Popover className="group">
+                    <PopoverTrigger className="flex gap-2 items-center group">
+                      <BodyText className="m-0">Balance data</BodyText>
+                      <ChevronDown className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                    </PopoverTrigger>
+                    <PopoverContent className="max-w-44" align="start">
+                      <BodyText
+                        tag="dl"
+                        className="grid items-center grid-cols-[auto_1fr] gap-2 [&>dt]:font-medium m-0"
+                      >
+                        <dt>Balance</dt>
+                        <dd>{formatCurrency(400)}</dd>
+                        <dd className="text-green-600 justify-self-end">
+                          <span className="sr-only">Gets</span>
+                          <Plus className="size-4" />
+                        </dd>
+                        <dd className="text-green-600">{formatCurrency(500)}</dd>
+                        <dt className="text-red-600 justify-self-end">
+                          <span className="sr-only">Owes</span>
+                          <Minus className="size-4" />
+                        </dt>
+                        <dd className="text-red-600">{formatCurrency(100)}</dd>
+                      </BodyText>
+                    </PopoverContent>
+                  </Popover>
+                </>
+              }
+            />
+          </li>
+        ))}
+      </FriendsGrid>
+    </div>
+  )
+}
+
+function FriendsGrid({ tag = "div", className, children }) {
+  const Tag = tag
+
+  return <Tag className={cn("grid gap-4 md:grid-cols-2 xl:grid-cols-3", className)}>{children}</Tag>
+}
+
+function FriendCard({ firstName, lastName, avatarUrl, actions, content, className }) {
+  return (
+    <Card className={cn("p-4 flex flex-col gap-4 justify-between h-full", className)}>
+      <CardHeader className="p-0">
+        <div className="flex justify-between">
+          <div className="flex flex-row-reverse items-center gap-2">
+            <BodyText
+              tag="h2"
+              className="mb-0 md:mb-0 text-lg md:text-xl font-semibold"
+            >{`${firstName} ${lastName}`}</BodyText>
+            <Avatar className="size-12 shrink-0">
+              <AvatarImage src={avatarUrl} />
+              <AvatarFallback className="bg-slate-300 text-foreground dark:text-secondary">
+                {`${firstName[0]}${lastName[0]}`}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button className="rounded-full" variant="ghost" size="icon">
+                <span className="sr-only">Edit</span> <Pencil className="size-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto flex flex-col gap-2" align="end">
+              {actions}
+            </PopoverContent>
+          </Popover>
+        </div>
+      </CardHeader>
+      <CardContent className="p-0">{content}</CardContent>
+    </Card>
   )
 }
 
