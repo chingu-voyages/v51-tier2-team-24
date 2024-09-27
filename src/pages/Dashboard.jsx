@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavLink } from 'react-router-dom';
 import { ExpensesList } from '@/components/ExpensesList';
 import { Heading, BodyText } from '@/components/Typography';
+import { Button } from '@/components/ui/button';
 
 const MOCK_GROUP_INFO = [
     { name: "Bali Trip", avatar: "#", id: "random_id_1", budget: 500, expense: 300, members: 5 },
@@ -39,42 +40,42 @@ function Dashboard() {
     return (
         <div className="w-full px-4">
             <Heading tag="h1" className="">Dashboard</Heading>
-            <section className=" my-4 flex w-full justify-center flex-wrap md:flex-nowrap md:gap-2">
+            <section className=" my-4 flex w-full justify-center flex-wrap md:flex-nowrap gap-2">
                 <Card className="w-full">
                     <CardHeader className="flex flex-row my-auto">
-                        <Group size={64} className="pr-3 border-r-2" />
+                        <Group className="pr-3 border-r-2 shrink-0 size-14 stroke-1" />
                         <div className="flex flex-col ml-4">
-                            <Heading tag="h2" className="mb-0 md:mb-0 lg:text-2xl">Total Groups</Heading>
-                            <Heading tag="h2" className="mb-0 lg:text-2xl">{MOCK_GROUP_INFO.length}</Heading>
+                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 lg:text-2xl font-bold">Total Groups</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-2xl">{MOCK_GROUP_INFO.length}</BodyText>
                         </div>
                     </CardHeader>
                 </Card>
                 <Card className="w-full mt-4 md:m-0">
                     <CardHeader className="flex flex-row my-auto">
-                        <UsersRound size={64} className="pr-3 border-r-2" />
+                        <UsersRound className="pr-3 border-r-2 shrink-0 size-14 stroke-1" />
                         <div className="flex flex-col ml-4">
-                            <Heading tag="h2" className="mb-0 md:mb-0 lg:text-2xl">Total Friends</Heading>
-                            <Heading tag="h2" className="mb-0 lg:text-2xl">2999</Heading>
+                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 lg:text-2xl font-bold">Total Friends</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-2xl">2999</BodyText>
                         </div>
                     </CardHeader>
                 </Card>
                 <Card className="w-full mt-4 md:m-0">
                     <CardHeader className="flex flex-row my-auto">
-                        <CircleDollarSign size={64} className="pr-3 border-r-2" />
+                        <CircleDollarSign className="pr-3 border-r-2 shrink-0 size-14 stroke-1" />
                         <div className="flex flex-col ml-4">
-                            <Heading tag="h2" className="mb-0 md:mb-0 lg:text-2xl">Total Expenses</Heading>
-                            <Heading tag="h2" className="mb-0 lg:text-2xl">{totalExpenses(MOCK_EXPENSES)}</Heading>
+                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 lg:text-2xl font-bold">Total Expenses</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-2xl">{totalExpenses(SORTED_MOCK_EXPENSES)}</BodyText>
                         </div>
                     </CardHeader>
                 </Card>
             </section>
             <section className="w-full">
-                <Heading tag="h1" className="mt-10 mb-5">Group Expense Overview</Heading>
-                <div className="w-full md:flex md:gap-2">
+                <Heading tag="h2" className="mt-10 mb-5">Group Expense Overview</Heading>
+                <div className="w-full flex flex-col md:flex-row gap-4">
                     {
                         LAST_THREE_GROUPS.map((group) => {
                             return (
-                                <Card key={group.id} className="w-1/3">
+                                <Card key={group.id} className="md:w-1/3">
                                     <CardHeader className="flex flex-row items-center max-w-max">
                                         <Avatar className="size-16">
                                             <AvatarImage src={group.avatar} />
@@ -82,16 +83,16 @@ function Dashboard() {
                                                 {getInitials(group.name)}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <Heading tag="h2" className="ml-3">{group.name}</Heading>
+                                        <BodyText tag="p" variant='normal' className="ml-3 font-bold">{group.name}</BodyText>
                                     </CardHeader>
                                     <CardContent className="ml-5">
                                         <BodyText tag="p" variant='normal' className="mb-1">Alloted Budget: ${group.budget}</BodyText>
                                         <BodyText tag="p" variant='normal' className="mb-1">Expense Amount: ${group.expense}</BodyText>
                                         <BodyText tag="p" variant='normal' className="mb-1">Participants: ${group.members}</BodyText>
                                     </CardContent>
-                                    <NavLink to={`/app/groups/${group.id}`} className="flex justify-end mr-7">
-                                        <BodyText tag="p" variant="normal">See More</BodyText>
-                                    </NavLink>
+                                    <Button className="text-primary flex justify-end mr-7" variant="link" asChild>
+                                        <NavLink to={`/app/groups/${group.id}`}>See More</NavLink>
+                                    </Button>
                                 </Card>
                             )
                         })
@@ -99,7 +100,7 @@ function Dashboard() {
                 </div>
             </section>
             <section>
-                <Heading tag="h1" className="mt-10 mb-5">Latest Expenses</Heading>
+                <Heading tag="h2" className="mt-10 mb-5">Latest Expenses</Heading>
                 {
                     <ExpensesList expenses={LAST_THREE_EXPENSES} />
                 }
