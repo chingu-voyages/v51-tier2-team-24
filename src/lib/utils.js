@@ -11,6 +11,14 @@ export function getInitials(name) {
   return initials
 }
 
+export function totalExpenses(array){
+  let total = 0;
+  array.forEach((e) => {
+    total += e.amount;
+  });
+  return total;
+}
+
 export function formatCurrency(number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
