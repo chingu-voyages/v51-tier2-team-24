@@ -1,11 +1,11 @@
-import { FriendCard } from "@/components/FriendCard"
+import { GridCard } from "@/components/GridCard"
 import { PageGrid } from "@/components/PageGrid"
 import { PageHeader } from "@/components/PageHeader"
 import { Button } from "@/components/ui/button"
 
 const FRIENDS_MOCK_DATA = [
-  { firstName: "Name", lastName: "Last Name", avatarUrl: null },
-  { firstName: "Name2", lastName: "Last Name2", avatarUrl: null },
+  { firstName: "Name", lastName: "Last Name", avatarUrl: undefined },
+  { firstName: "Name2", lastName: "Last Name2", avatarUrl: undefined },
 ]
 
 export function FriendsPage() {
@@ -20,9 +20,8 @@ export function FriendsPage() {
       <PageGrid tag="ul">
         {FRIENDS_MOCK_DATA.map((friend, index) => (
           <li key={index}>
-            <FriendCard
-              firstName={friend.firstName}
-              lastName={friend.lastName}
+            <GridCard
+              name={{ firstName: friend.firstName, lastName: friend.lastName }}
               avatarUrl={friend.avatarUrl}
               actions={<>{/* Add and instances of CardAction component */}</>}
               content={<>{/* Add card content here */}</>}
