@@ -3,7 +3,7 @@ import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { useParams } from "react-router-dom"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Plus, Minus } from "lucide-react"
 import PropTypes from "prop-types"
 import { cn, formatCurrency } from "@/lib/utils"
 import { forwardRef, useState } from "react"
@@ -131,56 +131,63 @@ Action.propTypes = {
 
 // TABS CONTENT
 
+// This is not a final data structure. Needs refinements.
 const PARTICIPANTS_MOCK_DATA = [
-  { firstName: "John", lastName: "Smith", gets: 3000 },
-  { firstName: "Jane", lastName: "Doe", owes: 2364 },
-  { firstName: "Alice", lastName: "Johnson", owes: 433 },
-  { firstName: "Bob", lastName: "Brown" },
+  { firstName: "John", lastName: "Smith", balance: 3000 },
+  { firstName: "Jane", lastName: "Doe", balance: -1000 },
+  { firstName: "Alice", lastName: "Johnson", balance: -1000 },
+  { firstName: "Bob", lastName: "Brown", balance: -500 },
+  { firstName: "Natan", lastName: "Brown", balance: -500 },
+  { firstName: "Taylor", lastName: "Brown", balance: 0 },
 ]
 
 const Balances = () => {
+  // Automatically calculate and display who owes what to whom within the group and taking into account the weighted contributions of a participant or the weighted contribution of a participant to an individual expense. It will depend on the data structure.
   return (
-    <>
-      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg: xl:grid-cols-3">
-        {PARTICIPANTS_MOCK_DATA.map((particpant, index) => (
-          <li className="w-full" key={index}>
-            <ParticipantCard participant={particpant} />
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg: xl:grid-cols-3">
+      {PARTICIPANTS_MOCK_DATA.map((particpant, index) => (
+        <li className="w-full" key={index}>
+          <ParticipantCard participant={particpant} />
+        </li>
+      ))}
+    </ul>
   )
 }
 
 const ParticipantCard = ({ participant, className }) => {
   return (
-    <Card className={cn("p-2 flex gap-4 items-center justify-between", className)}>
-      <div>
-        <div className="flex items-center gap-2 mb-2">
+    <Card className={cn("p-4 flex gap-4 justify-between h-full", className)}>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
           <BodyText tag="span" className="font-semibold leading-none mb-0 leading-0 shrink-0">
             {participant.firstName}
           </BodyText>
           <div className="flex gap-2">
-            {participant.gets ? (
-              <BalanceBadge amount={3000} />
-            ) : participant.owes ? (
-              <BalanceBadge variant="owes" amount={3000} />
-            ) : null}
+            <BalanceBadge amount={participant.balance} />
           </div>
         </div>
-        <Popover className="group">
-          <PopoverTrigger className="text-sm lg:text-base flex gap-2 items-center group">
-            In 4 payments
-            <ChevronDown className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-          </PopoverTrigger>
-          <PopoverContent className="max-w-56" align="start">
-            <ul className="text-sm lg:text-base list-disc pl-4">
-              <li>from Parker: {formatCurrency(300)}</li>
-              <li>from Rosendo: {formatCurrency(403)}</li>
-              <li>from Emily: {formatCurrency(1000)}</li>
-            </ul>
-          </PopoverContent>
-        </Popover>
+        {participant.balance !== 0 && (
+          <Popover className="group">
+            <PopoverTrigger className="text-sm lg:text-base flex gap-2 items-center group">
+              In 4 payments
+              <ChevronDown className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            </PopoverTrigger>
+            <PopoverContent className="max-w-56" align="start">
+              <ul className="text-sm lg:text-base">
+                <li className="flex items-center gap-2 leading-o text-red-600">
+                  <Minus className="size-4" /> {formatCurrency(Math.abs(300))} to Parker
+                </li>
+                <li className="flex items-center gap-2 leading-o text-green-600">
+                  <Plus className="size-4" />
+                  {formatCurrency(Math.abs(403))} from Rosendo
+                </li>
+                <li className="flex items-center gap-2 leading-o text-green-600">
+                  <Plus className="size-4" /> {formatCurrency(Math.abs(1000))} from Emily
+                </li>
+              </ul>
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
       <Avatar className="size-12 shrink-0">
         <AvatarImage src="#" />
@@ -192,27 +199,32 @@ const ParticipantCard = ({ participant, className }) => {
   )
 }
 
-const BalanceBadge = ({ variant = "gets", amount }) => {
-  const shouldGet = variant === "gets"
-  // TODO add balance 0 variant
+const BalanceBadge = ({ amount }) => {
+  const isBalancePositive = amount > 0
+  const isBalanceNegative = amount < 0
+  const isBalanceZero = amount === 0
 
   return (
     <Badge
       className={cn(
         "px-1",
-        shouldGet
-          ? "text-green-600 border-green-600 bg-green-50"
-          : "text-red-600 border-red-600 bg-red-50"
+        isBalancePositive && "text-green-600 border-green-600 bg-green-50",
+        isBalanceNegative && "text-red-600 border-red-600 bg-red-50",
+        isBalanceZero && "border-current"
       )}
       variant="outline"
     >
-      <span className="hidden sm:block">{shouldGet ? "Gets" : "Owes"}</span>&nbsp;
-      {formatCurrency(amount)}
+      <span className="hidden sm:block">
+        {isBalancePositive && "Gets"}
+        {isBalanceNegative && "Owes"}
+        {isBalanceZero && "Balance"}
+      </span>
+      &nbsp;
+      {isBalanceZero ? amount : formatCurrency(Math.abs(amount))}
     </Badge>
   )
 }
 
 Action.propTypes = {
-  variant: PropTypes.oneOf(["owes, gets"]),
   amount: PropTypes.number.isRequired,
 }
