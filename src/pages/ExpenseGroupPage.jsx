@@ -14,7 +14,7 @@ import GridCard from "@/components/GridCard"
 import { PageGrid } from "@/components/PageGrid"
 import { CardAction } from "@/components/CardAction"
 import PropTypes from "prop-types"
-import { PARTICIPANTS_MOCK_DATA } from "./FirstGroupPage/mock-data"
+import { PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
@@ -164,13 +164,7 @@ const BalanceCard = ({ participant, className }) => {
 }
 
 BalanceCard.propTypes = {
-  participant: PropTypes.shape({
-    firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
-    avatarUrl: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    balance: PropTypes.number.isRequired,
-  }),
+  participant: ParticipantType,
   className: PropTypes.string,
 }
 
@@ -189,7 +183,7 @@ const BalanceBadge = ({ amount }) => {
       )}
       variant="outline"
     >
-      <span className={(isBalancePositive || isBalanceNegative) && "hidden sm:block"}>
+      <span className={cn("hidden sm:block", { block: isBalanceZero })}>
         {isBalancePositive && "Gets"}
         {isBalanceNegative && "Owes"}
         {isBalanceZero && "Balance"}

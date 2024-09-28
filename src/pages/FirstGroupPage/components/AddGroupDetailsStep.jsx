@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { EXPENSE_GROUP_CATEGORIES_MOCK } from "../mock-data"
+import { EXPENSE_GROUP_CATEGORIES_MOCK } from "@/lib/mock-data"
 import { StepActions } from "../FirstGroupPage"
 import { BodyText } from "@/components/Typography"
 

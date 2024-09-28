@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"
+
 export const EXPENSE_GROUP_CATEGORIES_MOCK = [
   "Food & Drinks",
   "Travel",
@@ -81,3 +83,24 @@ export const EXPENSES_MOCK_DATA = [
     id: "some_unique_id_3",
   },
 ]
+
+//  === TYPES ===
+
+export const ParticipantType = PropTypes.shape({
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  avatarUrl: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  balance: PropTypes.number.isRequired,
+})
+
+export const ExpenseType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  purchaser: PropTypes.string.isRequired,
+  contributionWeight: PropTypes.number.isRequired,
+  receiptUrl: PropTypes.string,
+})

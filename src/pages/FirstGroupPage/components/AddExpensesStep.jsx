@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { StepActions } from "../FirstGroupPage"
-import { EXPENSE_CATEGORIES_MOCK } from "../mock-data"
+import { EXPENSE_CATEGORIES_MOCK } from "@/lib/mock-data"
 import { BodyText } from "@/components/Typography"
 
 export function AddExpensesStep({ includeActions = false }) {
