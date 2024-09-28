@@ -45,8 +45,8 @@ function Dashboard() {
                     <CardHeader className="flex flex-row my-auto">
                         <Group className="pr-3 border-r-2 shrink-0 size-14 stroke-1" />
                         <div className="flex flex-col ml-4">
-                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 lg:text-2xl font-bold">Total Groups</BodyText>
-                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-2xl">{MOCK_GROUP_INFO.length}</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 font-bold">Total Groups</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-lg">{MOCK_GROUP_INFO.length}</BodyText>
                         </div>
                     </CardHeader>
                 </Card>
@@ -54,8 +54,8 @@ function Dashboard() {
                     <CardHeader className="flex flex-row my-auto">
                         <UsersRound className="pr-3 border-r-2 shrink-0 size-14 stroke-1" />
                         <div className="flex flex-col ml-4">
-                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 lg:text-2xl font-bold">Total Friends</BodyText>
-                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-2xl">2999</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 font-bold">Total Friends</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-lg">2999</BodyText>
                         </div>
                     </CardHeader>
                 </Card>
@@ -63,15 +63,15 @@ function Dashboard() {
                     <CardHeader className="flex flex-row my-auto">
                         <CircleDollarSign className="pr-3 border-r-2 shrink-0 size-14 stroke-1" />
                         <div className="flex flex-col ml-4">
-                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 lg:text-2xl font-bold">Total Expenses</BodyText>
-                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-2xl">{totalExpenses(SORTED_MOCK_EXPENSES)}</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 md:mb-0 font-bold">Total Expenses</BodyText>
+                            <BodyText tag="p" variant="normal" className="mb-0 lg:text-lg">{totalExpenses(SORTED_MOCK_EXPENSES)}</BodyText>
                         </div>
                     </CardHeader>
                 </Card>
             </section>
             <section className="w-full">
                 <Heading tag="h2" className="mt-10 mb-5">Group Expense Overview</Heading>
-                <div className="w-full flex flex-col md:flex-row gap-4">
+                <div className="w-full flex flex-col md:flex-row gap-5">
                     {
                         LAST_THREE_GROUPS.map((group) => {
                             return (
@@ -86,11 +86,11 @@ function Dashboard() {
                                         <BodyText tag="p" variant='normal' className="ml-3 font-bold">{group.name}</BodyText>
                                     </CardHeader>
                                     <CardContent className="ml-5">
-                                        <BodyText tag="p" variant='normal' className="mb-1">Alloted Budget: ${group.budget}</BodyText>
-                                        <BodyText tag="p" variant='normal' className="mb-1">Expense Amount: ${group.expense}</BodyText>
-                                        <BodyText tag="p" variant='normal' className="mb-1">Participants: ${group.members}</BodyText>
+                                        <BodyText tag="p" variant='normal' className="mb-1 md:text-[1rem] lg:text-[0.95rem]">Alloted Budget: ${group.budget}</BodyText>
+                                        <BodyText tag="p" variant='normal' className="mb-1 md:text-[1rem] lg:text-[0.95rem]">Expense Amount: ${group.expense}</BodyText>
+                                        <BodyText tag="p" variant='normal' className="mb-1 md:text-[1rem] lg:text-[0.95rem]">Participants: ${group.members}</BodyText>
                                     </CardContent>
-                                    <Button className="text-primary flex justify-end mr-7" variant="link" asChild>
+                                    <Button className="text-primary flex justify-end mr-3" variant="link" asChild>
                                         <NavLink to={`/app/groups/${group.id}`}>See More</NavLink>
                                     </Button>
                                 </Card>
