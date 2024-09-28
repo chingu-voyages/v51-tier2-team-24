@@ -12,6 +12,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BodyText } from "@/components/Typography"
+import { ChartPie } from "@/components/ChartPie"
+import { ChartBar } from "@/components/ChartBar"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
@@ -72,7 +74,7 @@ export function ExpenseGroupPage() {
         }
       />
 
-      <Tabs defaultValue="participants" className="w-full">
+      <Tabs defaultValue="statistics" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="balances">
             Balances
@@ -90,7 +92,9 @@ export function ExpenseGroupPage() {
         <TabsContent value="balances">
           <Balances />
         </TabsContent>
-        <TabsContent value="statistics">Statistics content</TabsContent>
+        <TabsContent value="statistics">
+          <Statistics />
+        </TabsContent>
         <TabsContent value="participants">
           <FriendsList />
         </TabsContent>
@@ -340,4 +344,13 @@ function FriendCard({ firstName, lastName, avatarUrl, actions, content, classNam
 
 Action.propTypes = {
   amount: PropTypes.number.isRequired,
+}
+
+function Statistics() {
+  return (
+    <div>
+      <ChartPie />
+      <ChartBar />
+    </div>
+  )
 }
