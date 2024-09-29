@@ -35,7 +35,7 @@ const formatCurrency = (value) => `$${value.toLocaleString()}`
 
 export function ChartBar() {
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Budget vs Expenses</CardTitle>
         <CardDescription>Financial Year 2024</CardDescription>

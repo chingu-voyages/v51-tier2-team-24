@@ -80,7 +80,7 @@ const chartData = processChartData(rawChartData)
 
 export function ChartPie() {
   return (
-    <Card className="flex flex-col">
+    <Card className="w-full flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Expense Categories</CardTitle>
         <CardDescription>Total Expenses Breakdown</CardDescription>

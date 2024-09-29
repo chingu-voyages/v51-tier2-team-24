@@ -273,7 +273,7 @@ const Participants = () => {
 
 const Statistics = () => {
   return (
-    <div>
+    <div className="flex flex-col gap-4 md:flex-row md:justify-between">
       <ChartPie />
       <ChartBar />
     </div>
