@@ -20,11 +20,11 @@ const LAST_THREE_GROUPS = MOCK_GROUP_INFO.slice(-3);
 
 
 const MOCK_EXPENSES = [
-    { name: "Plane tickets to Hawaii", group: "Hawaii Trip", amount: 150, id: "expense_id_1", date: new Date('2024-01-02') },
-    { name: "Hotel for Bali", group: "Bali Trip", amount: 150, id: "expense_id_2", date: new Date('2024-08-23') },
-    { name: "Beer for John's Birthday", group: "John's Birthday", amount: 150, id: "expense_id_3", date: new Date('2024-05-18') },
-    { name: "BBQ for Mike's Birthday", group: "Mike's Birthday", amount: 150, id: "expense_id_4", date: new Date('2024-06-30') },
-    { name: "Escape Room Entry fee", group: "Escape Room", amount: 150, id: "expense_id_5", date: new Date('2024-02-24') },
+    { name: "Plane tickets to Hawaii", group: "Hawaii Trip", amount: 150, id: "expense_id_1", date: new Date('2024-01-02'), description: "", category: "", purchaser: "", contributionWeight: 10 },
+    { name: "Hotel for Bali", group: "Bali Trip", amount: 150, id: "expense_id_2", date: new Date('2024-08-23'), description: "", category: "", purchaser: "", contributionWeight: 10 },
+    { name: "Beer for John's Birthday", group: "John's Birthday", amount: 150, id: "expense_id_3", date: new Date('2024-05-18'), description: "", category: "", purchaser: "", contributionWeight: 10 },
+    { name: "BBQ for Mike's Birthday", group: "Mike's Birthday", amount: 150, id: "expense_id_4", date: new Date('2024-06-30'), description: "", category: "", purchaser: "", contributionWeight: 10 },
+    { name: "Escape Room Entry fee", group: "Escape Room", amount: 150, id: "expense_id_5", date: new Date('2024-02-24'), description: "", category: "", purchaser: "", contributionWeight: 10 },
 ]
 
 //Sorting expenses by date
