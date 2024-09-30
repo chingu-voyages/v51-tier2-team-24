@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"
+
 export const EXPENSE_GROUP_CATEGORIES_MOCK = [
   "Food & Drinks",
   "Travel",
@@ -28,10 +30,22 @@ export const EXPENSE_CATEGORIES_MOCK = [
 ]
 
 export const PARTICIPANTS_MOCK_DATA = [
-  { firstName: "John", lastName: "Smith", avatarUrl: "#", id: "some_random-id_1" },
-  { firstName: "Thomas", lastName: "Edison", avatarUrl: "#", id: "some_random-id_2" },
-  { firstName: "Mickael", lastName: "Jackson", avatarUrl: "#", id: "some_random-id_3" },
-  { firstName: "Darren", lastName: "McGregor", avatarUrl: "#", id: "some_random-id_4" },
+  { firstName: "John", lastName: "Smith", avatarUrl: "#", id: "some_random-id_1", balance: 3000 },
+  {
+    firstName: "Thomas",
+    lastName: "Edison",
+    avatarUrl: "#",
+    id: "some_random-id_2",
+    balance: -1000,
+  },
+  {
+    firstName: "Mickael",
+    lastName: "Jackson",
+    avatarUrl: "#",
+    id: "some_random-id_3",
+    balance: -2000,
+  },
+  { firstName: "Darren", lastName: "McGregor", avatarUrl: "#", id: "some_random-id_4", balance: 0 },
 ]
 
 export const EXPENSES_MOCK_DATA = [
@@ -69,3 +83,24 @@ export const EXPENSES_MOCK_DATA = [
     id: "some_unique_id_3",
   },
 ]
+
+//  === TYPES ===
+
+export const ParticipantType = PropTypes.shape({
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  avatarUrl: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  balance: PropTypes.number.isRequired,
+})
+
+export const ExpenseType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  purchaser: PropTypes.string.isRequired,
+  contributionWeight: PropTypes.number.isRequired,
+  receiptUrl: PropTypes.string,
+})

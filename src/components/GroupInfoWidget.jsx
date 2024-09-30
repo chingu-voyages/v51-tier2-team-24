@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { cn, formatCurrency } from "@/lib/utils"
 import PropTypes from "prop-types"
+import { BodyText } from "./Typography"
 
 export function GroupInfoWidget({ groupInfo, actions, className }) {
   return (
@@ -26,9 +27,9 @@ export function GroupInfoWidget({ groupInfo, actions, className }) {
         <div className="space-y-1.5 flex flex-col justify-between flex-1">
           <CardTitle className="text-2xl font-b">{groupInfo.groupName}</CardTitle>
           <CardDescription>{groupInfo.description}</CardDescription>
-          <p className="text-green-600 leading-none">
+          <BodyText variant="small" tag="p" className="text-green-600 leading-none">
             Allotted: {formatCurrency(groupInfo.amount)}
-          </p>
+          </BodyText>
         </div>
         <div className="ml-auto">{actions}</div>
       </CardHeader>

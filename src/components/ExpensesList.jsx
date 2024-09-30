@@ -11,6 +11,7 @@ import { AspectRatio } from "./ui/aspect-ratio"
 import { Button } from "./ui/button"
 import { ImageOff, ZoomIn } from "lucide-react"
 import { Input } from "./ui/input"
+import { ExpenseType } from "@/lib/mock-data"
 
 export function ExpensesList({ expenses }) {
   return (
@@ -119,13 +120,7 @@ const ExpenseReceipt = ({ receiptUrl }) => (
 )
 
 ExpenseDetails.propTypes = {
-  expense: PropTypes.shape({
-    description: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired,
-    purchaser: PropTypes.string.isRequired,
-    contributionWeight: PropTypes.number.isRequired,
-  }).isRequired,
+  expense: ExpenseType.isRequired,
 }
 
 ExpenseReceipt.propTypes = {
@@ -133,16 +128,5 @@ ExpenseReceipt.propTypes = {
 }
 
 ExpensesList.propTypes = {
-  expenses: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      amount: PropTypes.number.isRequired,
-      description: PropTypes.string.isRequired,
-      category: PropTypes.string.isRequired,
-      purchaser: PropTypes.string.isRequired,
-      contributionWeight: PropTypes.number.isRequired,
-      receiptUrl: PropTypes.string,
-    })
-  ).isRequired,
+  expenses: PropTypes.arrayOf(ExpenseType).isRequired,
 }

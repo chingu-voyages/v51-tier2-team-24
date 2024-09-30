@@ -1,13 +1,12 @@
 import { BodyText, Heading } from "@/components/Typography"
 import { useFirstGroupPageContext } from "../hooks/useFirstGroupPageContext"
 import { StepActions } from "../FirstGroupPage"
-import { StepsContentCommonTypes } from "./types"
-import { EXPENSES_MOCK_DATA, PARTICIPANTS_MOCK_DATA } from "../mock-data"
+import { EXPENSES_MOCK_DATA, PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
 import { ExpensesList } from "@/components/ExpensesList"
 import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { SelectedParticipantsList } from "@/components/SelectedParticipantsList"
 
-export function LastStep({ includeActions = false }) {
+export function LastStep() {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
 
@@ -42,9 +41,7 @@ export function LastStep({ includeActions = false }) {
         </section>
       ) : null}
 
-      {includeActions && <StepActions />}
+      <StepActions />
     </div>
   )
 }
-
-LastStep.propTypes = StepsContentCommonTypes

@@ -73,5 +73,8 @@ BodyText.propTypes = {
     "h4",
     "h5",
     "h6",
+    "dl",
+    "dt",
+    "dd",
   ]),
 }

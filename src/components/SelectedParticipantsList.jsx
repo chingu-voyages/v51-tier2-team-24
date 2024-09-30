@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BodyText } from "@/components/Typography"
 import PropTypes from "prop-types"
+import { ParticipantType } from "@/lib/mock-data"
 
 export function SelectedParticipantsList({ participants }) {
   return (
@@ -34,11 +35,5 @@ export function SelectedParticipantsList({ participants }) {
 }
 
 SelectedParticipantsList.propTypes = {
-  participants: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  participants: PropTypes.arrayOf(ParticipantType).isRequired,
 }
