@@ -17,6 +17,11 @@ import PropTypes from "prop-types"
 import { PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
 import { ChartPie } from "@/components/ChartPie"
 import { ChartBar } from "@/components/ChartBar"
+import { ResponsiveDialog } from "@/components/ResponsiveDialog"
+import { ParticipantForm } from "@/components/forms/ParticipantForm"
+import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
+import { Alert } from "@/components/Alert"
+import { ExpenseForm } from "@/components/forms/ExpenseForm"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
@@ -31,8 +36,7 @@ export function ExpenseGroupPage() {
 
   // get expense group data by groupId
 
-  const editAction = () => {
-    // to redirect to the app/groups/:groupId/edit page or to show a modal
+  const handleEditAction = () => {
     console.log("Edit")
   }
   const deleteAction = () => {
@@ -57,15 +61,24 @@ export function ExpenseGroupPage() {
               <CardAction isResponsive>Actions</CardAction>
             </PopoverTrigger>
             <PopoverContent className="w-auto flex flex-col gap-2" align="end">
-              <CardAction onClick={editAction} className="border-current">
-                Edit
-              </CardAction>
-              <CardAction
-                onClick={deleteAction}
-                className="border-red-600 text-red-600 hover:bg-red-100"
+              <ResponsiveDialog
+                dialogTitle="Edit Group Details"
+                trigger={<CardAction className="border-current">Edit</CardAction>}
               >
-                Delete
-              </CardAction>
+                <GroupDetailsForm className="md:flex" onSubmit={handleEditAction} />
+              </ResponsiveDialog>
+              <Alert
+                trigger={
+                  <CardAction
+                    onClick={deleteAction}
+                    className="border-red-600 text-red-600 hover:bg-red-100"
+                  >
+                    Delete
+                  </CardAction>
+                }
+                onSubmit={deleteAction}
+                dialogTitle="Are you sure you want to delete this group?"
+              />
               <CardAction
                 onClick={exportAction}
                 className="border-green-600 text-green-600 hover:bg-green-100"
@@ -77,7 +90,7 @@ export function ExpenseGroupPage() {
         }
       />
 
-      <Tabs defaultValue="participants" className="w-full">
+      <Tabs defaultValue="balances" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="balances">
             Balances
@@ -88,6 +101,7 @@ export function ExpenseGroupPage() {
           <TabsTrigger className="w-full" value="participants">
             Participants
           </TabsTrigger>
+          {/* Temporaly removed, because this tab has a low priority */}
           {/* <TabsTrigger className="w-full" value="receipts">
             Receipts
           </TabsTrigger> */}
@@ -101,6 +115,7 @@ export function ExpenseGroupPage() {
         <TabsContent value="participants">
           <Participants />
         </TabsContent>
+        {/* Temporaly removed, because this tab has a low priority */}
         {/* <TabsContent value="receipts">Receipts content </TabsContent> */}
       </Tabs>
     </>
@@ -203,9 +218,25 @@ BalanceBadge.propTypes = {
 }
 
 const Participants = () => {
+  const handleAddParticipant = (event) => {
+    event.preventDefault()
+    console.log("handleAddParticipant: Submit from Participants Tab")
+  }
+
+  const handleAddParticipantExpense = (event) => {
+    event.preventDefault()
+    console.log("handleAddParticipantExpense: Submit from Participants Tab")
+  }
+
   return (
     <div className="pt-4 flex flex-col">
-      <Button className="mb-6 self-end">Add Participant</Button>
+      <ResponsiveDialog
+        dialogTitle="Add Participant"
+        trigger={<Button className="mb-6 self-end">Add Participant</Button>}
+      >
+        <ParticipantForm showParticipantsPreview={false} onSubmit={handleAddParticipant} />
+      </ResponsiveDialog>
+
       <PageGrid tag="ul">
         {PARTICIPANTS_MOCK_DATA.map((participant) => (
           <li key={participant.id}>
@@ -214,15 +245,23 @@ const Participants = () => {
               avatarUrl={participant.avatarUrl}
               actions={
                 <>
-                  <CardAction onClick={() => console.log("add expense")} className="border-current">
-                    Add Expense
-                  </CardAction>
-                  <CardAction
-                    onClick={() => console.log("remove from group")}
-                    className="border-red-600 text-red-600 hover:bg-red-100"
+                  <ResponsiveDialog
+                    dialogTitle="New Expense"
+                    dialogDescription="Add a new expense made by this participant"
+                    trigger={<CardAction className="border-current">Add Expense</CardAction>}
                   >
-                    Remove <span className="sr-only">from group</span>
-                  </CardAction>
+                    <ExpenseForm onSubmit={handleAddParticipantExpense} />
+                  </ResponsiveDialog>
+                  <Alert
+                    trigger={
+                      <CardAction
+                        onClick={() => console.log("remove from group")}
+                        className="border-red-600 text-red-600 hover:bg-red-100"
+                      >
+                        Remove <span className="sr-only">from group</span>
+                      </CardAction>
+                    }
+                  />
                 </>
               }
               content={

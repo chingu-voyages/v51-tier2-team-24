@@ -21,11 +21,14 @@ import { Calendar } from "../ui/calendar"
 import { CONTRIBUTION_WEIGHTS } from "@/lib/constants"
 
 // TODO add default values prop (needed in case of edit
-export function ExpenseForm({ onSubmit, actions }) {
+export function ExpenseForm({ onSubmit, actions, className }) {
   const [date, setDate] = useState()
 
   return (
-    <form className="flex flex-col gap-4 md:grid md:grid-cols-2" onSubmit={onSubmit}>
+    <form
+      className={cn("flex flex-col gap-4 md:grid md:grid-cols-2", className)}
+      onSubmit={onSubmit}
+    >
       <Label className="md:col-span-full">
         <span className="sr-only">Expense name</span>
         <Input name="expenseName" type="text" placeholder="Name" />
@@ -113,7 +116,13 @@ export function ExpenseForm({ onSubmit, actions }) {
         <span className="inline-block mb-2">Receipt proof (can be uploaded later)</span>
         <Input name="expenseReceipt" type="file" />
       </Label>
-      {actions ? actions : <Button type="submit">Submit</Button>}
+      {actions ? (
+        actions
+      ) : (
+        <Button className="col-span-full" type="submit">
+          Submit
+        </Button>
+      )}
     </form>
   )
 }
@@ -122,4 +131,5 @@ ExpenseForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   actions: PropTypes.node,
   // defaultValues: PropsTypes.
+  className: PropTypes.string,
 }
