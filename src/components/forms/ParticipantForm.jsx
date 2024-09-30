@@ -12,14 +12,14 @@ import { Percent, Plus } from "lucide-react"
 import { CONTRIBUTION_WEIGHTS } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 import PropTypes from "prop-types"
+import { cn } from "@/lib/utils"
+import { SelectedParticipantsList } from "../SelectedParticipantsList"
+import { PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
 
 // TODO add default values prop (needed in case of edit
-export function ParticipantForm({ onSubmit, actions }) {
+export function ParticipantForm({ onSubmit, actions, showParticipantsPreview = true, className }) {
   return (
-    <form
-      className="flex flex-col gap-4 md:grid grid-cols-[repeat(3,1fr)_auto]"
-      onSubmit={onSubmit}
-    >
+    <form className={cn("flex flex-col gap-4", className)} onSubmit={onSubmit}>
       <Label>
         <span className="sr-only">Participant first name</span>
         <Input name="firstName" type="text" placeholder="First Name" />
@@ -49,11 +49,24 @@ export function ParticipantForm({ onSubmit, actions }) {
         </Select>
       </Label>
 
-      <Button className="gap-2" type="button" variant="secondary">
-        Add<span className="md:hidden">&nbsp;participant</span>
-        <Plus className="hidden md:block size-4" />
-      </Button>
-      {actions ? actions : <Button type="submit">Submit</Button>}
+      {showParticipantsPreview && (
+        <>
+          <Button className="gap-2" type="button" variant="secondary">
+            Add<span className="md:hidden">&nbsp;participant</span>
+            <Plus className="hidden md:block size-4" />
+          </Button>
+          <div className="md:col-span-full">
+            <SelectedParticipantsList participants={PARTICIPANTS_MOCK_DATA} />
+          </div>
+        </>
+      )}
+      {actions ? (
+        actions
+      ) : (
+        <Button className="col-span-full" type="submit">
+          Submit
+        </Button>
+      )}
     </form>
   )
 }
@@ -61,5 +74,7 @@ export function ParticipantForm({ onSubmit, actions }) {
 ParticipantForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   actions: PropTypes.node,
+  className: PropTypes.string,
+  showParticipantsPreview: PropTypes.bool,
   // defaultValues: PropsTypes.
 }

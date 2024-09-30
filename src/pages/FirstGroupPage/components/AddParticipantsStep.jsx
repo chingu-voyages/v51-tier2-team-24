@@ -23,6 +23,7 @@ export function AddParticipantsStep() {
       <ParticipantForm
         onSubmit={handleSubmit}
         actions={<StepActions className="md:col-span-full" isWithinForm />}
+        className="md:grid grid-cols-[repeat(3,1fr)_auto]"
       />
     </>
   )
