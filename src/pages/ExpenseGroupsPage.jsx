@@ -1,6 +1,8 @@
+import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
 import GridCard from "@/components/GridCard"
 import { PageGrid } from "@/components/PageGrid"
 import { PageHeader } from "@/components/PageHeader"
+import { ResponsiveDialog } from "@/components/ResponsiveDialog"
 import { BodyText } from "@/components/Typography"
 import { Button } from "@/components/ui/button"
 import { formatCurrency } from "@/lib/utils"
@@ -29,6 +31,12 @@ const MOCK_GROUP_INFO = [
 ]
 
 export function ExpenseGroupsPage() {
+  const handleCreateNewGroup = (event) => {
+    event.preventDefault()
+    console.log("handleCreateNewGroup")
+    // redirect user to the grup page after the form is successfully submitted
+  }
+
   const groupList = MOCK_GROUP_INFO.map((group) => {
     return (
       <GridCard
@@ -60,11 +68,19 @@ export function ExpenseGroupsPage() {
       />
     )
   })
+
   return (
     <>
       <PageHeader
         subheading="Detailed overview of all your groups"
-        headerAction={<Button>New Group</Button>}
+        headerAction={
+          <ResponsiveDialog
+            dialogTitle="Create a new group"
+            trigger={<Button className="mb-6 self-end">New Group</Button>}
+          >
+            <GroupDetailsForm onSubmit={handleCreateNewGroup} />
+          </ResponsiveDialog>
+        }
       >
         Groups
       </PageHeader>
