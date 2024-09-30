@@ -21,7 +21,6 @@ export function FirstGroupPage() {
       </Heading>
       <Scoped>
         <Steps />
-        <StepActions className="hidden lg:flex" />
       </Scoped>
     </>
   )
@@ -100,17 +99,17 @@ const StepsContent = ({ className, isCurrentStep, isStepBeforeLast, variant = "d
           })}
         >
           {stepper.when("first", () => (
-            <AddGroupDetailsStep includeActions />
+            <AddGroupDetailsStep />
           ))}
           {stepper.when("second", () => (
-            <AddParticipantsStep includeActions />
+            <AddParticipantsStep />
           ))}
           {stepper.when("third", () => (
-            <AddExpensesStep includeActions />
+            <AddExpensesStep />
           ))}
         </div>
       )}
-      {isCurrentStep && stepper.when("last", () => <LastStep includeActions />)}
+      {isCurrentStep && stepper.when("last", () => <LastStep />)}
     </div>
   ) : (
     <div className="hidden lg:block lg:mb-4">
