@@ -11,8 +11,7 @@ import {
 } from "@/components/ui/select"
 import PropTypes from "prop-types"
 import { Button } from "../ui/button"
-// TODO import from src/lib/mock-data
-import { EXPENSE_GROUP_CATEGORIES_MOCK } from "@/pages/FirstGroupPage/mock-data"
+import { EXPENSE_GROUP_CATEGORIES_MOCK } from "@/lib/mock-data"
 
 // TODO add default values prop (needed in case of edit action)
 export function GroupDetailsForm({ onSubmit, actions }) {

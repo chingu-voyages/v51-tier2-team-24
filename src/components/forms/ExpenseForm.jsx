@@ -11,8 +11,7 @@ import {
 } from "@/components/ui/select"
 import PropTypes from "prop-types"
 import { Button } from "../ui/button"
-// TODO import from src/lib/mock-data
-import { EXPENSE_CATEGORIES_MOCK, PARTICIPANTS_MOCK_DATA } from "@/pages/FirstGroupPage/mock-data"
+import { EXPENSE_CATEGORIES_MOCK, PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
 import { useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"

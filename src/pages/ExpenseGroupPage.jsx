@@ -1,17 +1,22 @@
-/* eslint-disable react/prop-types */
 import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { useParams } from "react-router-dom"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, Plus, Minus } from "lucide-react"
-import PropTypes from "prop-types"
 import { cn, formatCurrency } from "@/lib/utils"
-import { forwardRef, useState } from "react"
+import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BodyText } from "@/components/Typography"
+import GridCard from "@/components/GridCard"
+import { PageGrid } from "@/components/PageGrid"
+import { CardAction } from "@/components/CardAction"
+import PropTypes from "prop-types"
+import { PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
+import { ChartPie } from "@/components/ChartPie"
+import { ChartBar } from "@/components/ChartBar"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
@@ -49,30 +54,30 @@ export function ExpenseGroupPage() {
         actions={
           <Popover>
             <PopoverTrigger asChild>
-              <Action isResponsive>Actions</Action>
+              <CardAction isResponsive>Actions</CardAction>
             </PopoverTrigger>
             <PopoverContent className="w-auto flex flex-col gap-2" align="end">
-              <Action onClick={editAction} className="border-current">
+              <CardAction onClick={editAction} className="border-current">
                 Edit
-              </Action>
-              <Action
+              </CardAction>
+              <CardAction
                 onClick={deleteAction}
                 className="border-red-600 text-red-600 hover:bg-red-100"
               >
                 Delete
-              </Action>
-              <Action
+              </CardAction>
+              <CardAction
                 onClick={exportAction}
                 className="border-green-600 text-green-600 hover:bg-green-100"
               >
                 Export
-              </Action>
+              </CardAction>
             </PopoverContent>
           </Popover>
         }
       />
 
-      <Tabs defaultValue="balances" className="w-full">
+      <Tabs defaultValue="participants" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="balances">
             Balances
@@ -83,78 +88,41 @@ export function ExpenseGroupPage() {
           <TabsTrigger className="w-full" value="participants">
             Participants
           </TabsTrigger>
-          <TabsTrigger className="w-full" value="receipts">
+          {/* <TabsTrigger className="w-full" value="receipts">
             Receipts
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="balances">
           <Balances />
         </TabsContent>
-        <TabsContent value="statistics">Statistics content</TabsContent>
-        <TabsContent value="participants">Participants content</TabsContent>
-        <TabsContent value="receipts">Receipts content </TabsContent>
+        <TabsContent value="statistics">
+          <Statistics />
+        </TabsContent>
+        <TabsContent value="participants">
+          <Participants />
+        </TabsContent>
+        {/* <TabsContent value="receipts">Receipts content </TabsContent> */}
       </Tabs>
     </>
   )
 }
 
-const Action = forwardRef(({ children, className, isResponsive, ...rest }, ref) => (
-  <Button
-    {...rest}
-    ref={ref}
-    className={cn(
-      "leading-none rounded-full py-1 md:min-w-24 h-auto group md:gap-2 active:opacity-50",
-      { "max-md:size-8": isResponsive },
-      className
-    )}
-    variant="outline"
-  >
-    {isResponsive ? (
-      <>
-        <span className="hidden md:block">{children}</span>
-        <ChevronDown className="size-4 transition-transform duration-200 shrink-0 group-data-[state=open]:rotate-180" />
-      </>
-    ) : (
-      <span>{children}</span>
-    )}
-  </Button>
-))
-
-Action.displayName = "Action"
-
-Action.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-  isResponsive: PropTypes.bool,
-}
-
 // TABS CONTENT
-
-// This is not a final data structure. Needs refinements.
-const PARTICIPANTS_MOCK_DATA = [
-  { firstName: "John", lastName: "Smith", balance: 3000 },
-  { firstName: "Jane", lastName: "Doe", balance: -1000 },
-  { firstName: "Alice", lastName: "Johnson", balance: -1000 },
-  { firstName: "Bob", lastName: "Brown", balance: -500 },
-  { firstName: "Natan", lastName: "Brown", balance: -500 },
-  { firstName: "Taylor", lastName: "Brown", balance: 0 },
-]
 
 const Balances = () => {
   // Automatically calculate and display who owes what to whom within the group and taking into account the weighted contributions of a participant or the weighted contribution of a participant to an individual expense. It will depend on the data structure.
   return (
-    <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg: xl:grid-cols-3">
+    <PageGrid tag="ul">
       {PARTICIPANTS_MOCK_DATA.map((particpant, index) => (
         <li className="w-full" key={index}>
-          <ParticipantCard participant={particpant} />
+          <BalanceCard participant={particpant} />
         </li>
       ))}
-    </ul>
+    </PageGrid>
   )
 }
 
-const ParticipantCard = ({ participant, className }) => {
+const BalanceCard = ({ participant, className }) => {
   return (
     <Card className={cn("p-4 flex gap-4 justify-between h-full", className)}>
       <div className="flex flex-col gap-2">
@@ -199,6 +167,11 @@ const ParticipantCard = ({ participant, className }) => {
   )
 }
 
+BalanceCard.propTypes = {
+  participant: ParticipantType,
+  className: PropTypes.string,
+}
+
 const BalanceBadge = ({ amount }) => {
   const isBalancePositive = amount > 0
   const isBalanceNegative = amount < 0
@@ -214,7 +187,7 @@ const BalanceBadge = ({ amount }) => {
       )}
       variant="outline"
     >
-      <span className="hidden sm:block">
+      <span className={cn("hidden sm:block", { block: isBalanceZero })}>
         {isBalancePositive && "Gets"}
         {isBalanceNegative && "Owes"}
         {isBalanceZero && "Balance"}
@@ -225,6 +198,84 @@ const BalanceBadge = ({ amount }) => {
   )
 }
 
-Action.propTypes = {
+BalanceBadge.propTypes = {
   amount: PropTypes.number.isRequired,
+}
+
+const Participants = () => {
+  return (
+    <div className="pt-4 flex flex-col">
+      <Button className="mb-6 self-end">Add Participant</Button>
+      <PageGrid tag="ul">
+        {PARTICIPANTS_MOCK_DATA.map((participant) => (
+          <li key={participant.id}>
+            <GridCard
+              name={{ firstName: participant.firstName, lastName: participant.lastName }}
+              avatarUrl={participant.avatarUrl}
+              actions={
+                <>
+                  <CardAction onClick={() => console.log("add expense")} className="border-current">
+                    Add Expense
+                  </CardAction>
+                  <CardAction
+                    onClick={() => console.log("remove from group")}
+                    className="border-red-600 text-red-600 hover:bg-red-100"
+                  >
+                    Remove <span className="sr-only">from group</span>
+                  </CardAction>
+                </>
+              }
+              content={
+                <>
+                  <BodyText
+                    tag="dl"
+                    className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 [&>dt]:font-medium mb-2"
+                  >
+                    <dt>Spent</dt>
+                    <dd>{formatCurrency(3000)}</dd>
+                    <dt>Contribution Weight</dt>
+                    <dd>10%</dd>
+                  </BodyText>
+                  <Popover className="group">
+                    <PopoverTrigger className="flex gap-2 items-center group">
+                      <BodyText className="m-0">Balance data</BodyText>
+                      <ChevronDown className="size-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                    </PopoverTrigger>
+                    <PopoverContent className="max-w-44" align="start">
+                      <BodyText
+                        tag="dl"
+                        className="grid items-center grid-cols-[auto_1fr] gap-2 [&>dt]:font-medium m-0"
+                      >
+                        <dt>Balance</dt>
+                        <dd>{formatCurrency(400)}</dd>
+                        <dd className="text-green-600 justify-self-end">
+                          <span className="sr-only">Gets</span>
+                          <Plus className="size-4" />
+                        </dd>
+                        <dd className="text-green-600">{formatCurrency(500)}</dd>
+                        <dt className="text-red-600 justify-self-end">
+                          <span className="sr-only">Owes</span>
+                          <Minus className="size-4" />
+                        </dt>
+                        <dd className="text-red-600">{formatCurrency(100)}</dd>
+                      </BodyText>
+                    </PopoverContent>
+                  </Popover>
+                </>
+              }
+            />
+          </li>
+        ))}
+      </PageGrid>
+    </div>
+  )
+}
+
+const Statistics = () => {
+  return (
+    <div className="flex flex-col gap-4 md:flex-row md:justify-between">
+      <ChartPie />
+      <ChartBar />
+    </div>
+  )
 }
