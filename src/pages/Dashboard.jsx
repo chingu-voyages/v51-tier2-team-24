@@ -7,6 +7,8 @@ import { NavLink } from 'react-router-dom';
 import { ExpensesList } from '@/components/ExpensesList';
 import { Heading, BodyText } from '@/components/Typography';
 import { Button } from '@/components/ui/button';
+import GridCard from "@/components/GridCard";
+import { PageGrid } from "@/components/PageGrid";
 
 const MOCK_GROUP_INFO = [
     { name: "Bali Trip", avatar: "#", id: "random_id_1", budget: 500, expense: 300, members: 5 },
@@ -37,6 +39,33 @@ const LAST_THREE_EXPENSES = SORTED_MOCK_EXPENSES.slice(-3);
 
 
 function Dashboard() {
+
+    const groupList = LAST_THREE_GROUPS.map(group => {
+        return (
+          <GridCard
+            key={group.id}
+            name={group.name}
+            avatarUrl="#"
+            actions="Edit"
+            content={
+              <>
+                <BodyText tag="p" variant="normal" className="mb-1">Alloted Budget: ${group.budget}</BodyText>
+                <BodyText tag="p" variant="normal" className="mb-1">Expense Amount: ${group.expense}</BodyText>
+                <BodyText tag="p" variant="normal" className="mb-1">Participants: {group.members}</BodyText>
+              </>
+            }
+            footer= {
+                <>
+                    <Button>
+                        <NavLink to={`/app/groups/${group.id}`}>See More</NavLink>
+                    </Button>
+                </>
+            }
+          />
+        )
+      })
+
+
     return (
         <div className="w-full px-4">
             <Heading tag="h1" className="">Dashboard</Heading>
@@ -71,33 +100,10 @@ function Dashboard() {
             </section>
             <section className="w-full">
                 <Heading tag="h2" className="mt-10 mb-5">Group Expense Overview</Heading>
-                <div className="w-full flex flex-col md:flex-row gap-5">
-                    {
-                        LAST_THREE_GROUPS.map((group) => {
-                            return (
-                                <Card key={group.id} className="md:w-1/3">
-                                    <CardHeader className="flex flex-row items-center max-w-max">
-                                        <Avatar className="size-16">
-                                            <AvatarImage src={group.avatar} />
-                                            <AvatarFallback className="bg-slate-300 text-foreground">
-                                                {getInitials(group.name)}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <BodyText tag="p" variant='normal' className="ml-3 font-bold">{group.name}</BodyText>
-                                    </CardHeader>
-                                    <CardContent className="ml-5">
-                                        <BodyText tag="p" variant='normal' className="mb-1 md:text-[1rem] lg:text-[0.95rem]">Alloted Budget: ${group.budget}</BodyText>
-                                        <BodyText tag="p" variant='normal' className="mb-1 md:text-[1rem] lg:text-[0.95rem]">Expense Amount: ${group.expense}</BodyText>
-                                        <BodyText tag="p" variant='normal' className="mb-1 md:text-[1rem] lg:text-[0.95rem]">Participants: ${group.members}</BodyText>
-                                    </CardContent>
-                                    <Button className="text-primary flex justify-end mr-3" variant="link" asChild>
-                                        <NavLink to={`/app/groups/${group.id}`}>See More</NavLink>
-                                    </Button>
-                                </Card>
-                            )
-                        })
-                    }
-                </div>
+                <PageGrid>
+                    {groupList}
+                </PageGrid>
+
             </section>
             <section>
                 <Heading tag="h2" className="mt-10 mb-5">Latest Expenses</Heading>

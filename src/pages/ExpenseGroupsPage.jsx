@@ -2,6 +2,8 @@ import GridCard from "@/components/GridCard";
 import { PageGrid } from "@/components/PageGrid";
 import { PageHeader } from "@/components/PageHeader";
 import { BodyText } from "@/components/Typography";
+import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router-dom";
 
 export function ExpenseGroupsPage() {
   const MOCK_GROUP_INFO = [
@@ -26,7 +28,13 @@ export function ExpenseGroupsPage() {
             <BodyText tag="p" variant="normal" className="mb-1">Participants: {group.members}</BodyText>
           </>
         }
-        footer="See More"
+        footer={
+          <>
+            <Button>
+              <NavLink to={`/app/groups/${group.id}`}>See More</NavLink>
+            </Button>
+          </>
+        }
       />
     )
   })
