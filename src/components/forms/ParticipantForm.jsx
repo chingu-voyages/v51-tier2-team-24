@@ -1,5 +1,5 @@
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -7,26 +7,31 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Percent, Plus } from "lucide-react"
-import { CONTRIBUTION_WEIGHTS } from "@/lib/constants"
-import { Button } from "@/components/ui/button"
-import PropTypes from "prop-types"
-import { cn } from "@/lib/utils"
-import { SelectedParticipantsList } from "../SelectedParticipantsList"
-import { PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
+} from "@/components/ui/select";
+import { Percent, Plus } from "lucide-react";
+import { CONTRIBUTION_WEIGHTS } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import PropTypes from "prop-types";
+import { cn } from "@/lib/utils";
+import { SelectedParticipantsList } from "../SelectedParticipantsList";
+import { PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data";
 
 // TODO add default values prop (needed in case of edit
-export function ParticipantForm({ onSubmit, actions, showParticipantsPreview = true, className }) {
+export function ParticipantForm({
+  onSubmit,
+  actions,
+  showParticipantsPreview = true,
+  className,
+}) {
   return (
     <form className={cn("flex flex-col gap-4", className)} onSubmit={onSubmit}>
       <Label>
         <span className="sr-only">Participant first name</span>
-        <Input name="firstName" type="text" placeholder="First Name" />
+        <Input name="firstName" type="text" placeholder="First Name" required />
       </Label>
       <Label>
         <span className="sr-only">Participant last name</span>
-        <Input name="lastName" type="text" placeholder="Last Name" />
+        <Input name="lastName" type="text" placeholder="Last Name" required />
       </Label>
       <Label>
         <span className="sr-only">Select the contribution weight</span>
@@ -68,7 +73,7 @@ export function ParticipantForm({ onSubmit, actions, showParticipantsPreview = t
         </Button>
       )}
     </form>
-  )
+  );
 }
 
 ParticipantForm.propTypes = {
@@ -77,4 +82,4 @@ ParticipantForm.propTypes = {
   className: PropTypes.string,
   showParticipantsPreview: PropTypes.bool,
   // defaultValues: PropsTypes.
-}
+};

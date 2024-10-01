@@ -23,15 +23,15 @@ export function GroupDetailsForm({ onSubmit, actions, className }) {
     >
       <Label className="col-span-full">
         <span className="sr-only">Group name</span>
-        <Input type="text" name="groupName" placeholder="Name" />
+        <Input type="text" name="groupName" placeholder="Name" required/>
       </Label>
       <Label className="col-span-full">
         <span className="sr-only">Group description</span>
-        <Textarea name="groupDescription" placeholder="Description" />
+        <Textarea name="groupDescription" placeholder="Description" required />
       </Label>
       <Label>
         <span className="sr-only">Allotted budget</span>
-        <Input type="number" name="groupAllottedBudget" placeholder="Allotted Budget" />
+        <Input type="number" name="groupAllottedBudget" placeholder="Allotted Budget" required />
       </Label>
       <Label>
         <span className="sr-only">Select a group category</span>
