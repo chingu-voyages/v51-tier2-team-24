@@ -27,7 +27,7 @@ export function GroupDetailsForm({ onSubmit, actions, className }) {
       </Label>
       <Label className="col-span-full">
         <span className="sr-only">Group description</span>
-        <Textarea name="groupDescription" placeholder="Description" />
+        <Textarea type="text" name="groupDescription" placeholder="Description" />
       </Label>
       <Label>
         <span className="sr-only">Allotted budget</span>
