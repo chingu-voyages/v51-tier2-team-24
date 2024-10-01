@@ -55,6 +55,7 @@ BodyText.propTypes = {
     "p",
     "span",
     "div",
+    "ul",
     "li",
     "blockquote",
     "pre",

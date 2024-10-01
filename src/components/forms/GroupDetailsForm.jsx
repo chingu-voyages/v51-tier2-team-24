@@ -12,11 +12,15 @@ import {
 import PropTypes from "prop-types"
 import { Button } from "../ui/button"
 import { EXPENSE_GROUP_CATEGORIES_MOCK } from "@/lib/mock-data"
+import { cn } from "@/lib/utils"
 
 // TODO add default values prop (needed in case of edit action)
-export function GroupDetailsForm({ onSubmit, actions }) {
+export function GroupDetailsForm({ onSubmit, actions, className }) {
   return (
-    <form className="flex flex-col gap-4 md:grid md:grid-cols-2" onSubmit={onSubmit}>
+    <form
+      className={cn("flex flex-col gap-4 md:grid md:grid-cols-2", className)}
+      onSubmit={onSubmit}
+    >
       <Label className="col-span-full">
         <span className="sr-only">Group name</span>
         <Input type="text" name="groupName" placeholder="Name" />
@@ -50,7 +54,13 @@ export function GroupDetailsForm({ onSubmit, actions }) {
         <span className="inline-block mb-2">Group avatar</span>
         <Input name="groupAvatar" type="file" disabled />
       </Label>
-      {actions ? actions : <Button type="submit">Submit</Button>}
+      {actions ? (
+        actions
+      ) : (
+        <Button className="col-span-full" type="submit">
+          Submit
+        </Button>
+      )}
     </form>
   )
 }
@@ -58,5 +68,6 @@ export function GroupDetailsForm({ onSubmit, actions }) {
 GroupDetailsForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   actions: PropTypes.node,
+  className: PropTypes.string,
   // defaultValues: PropsTypes.
 }

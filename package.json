@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -25,8 +26,9 @@
     "@stepperize/react": "^3.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "firebase": "^10.13.2",
+    "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "firebase": "^10.13.2",
     "lucide-react": "^0.439.0",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
@@ -36,6 +38,7 @@
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0",
     "vaul": "^0.9.4",
     "zod": "^3.23.8"
   },
