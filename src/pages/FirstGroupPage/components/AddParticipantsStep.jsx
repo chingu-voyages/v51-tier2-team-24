@@ -3,15 +3,22 @@ import { StepsContentCommonTypes } from "./types"
 import { StepActions } from "../FirstGroupPage"
 import { BodyText } from "@/components/Typography"
 import { ParticipantForm } from "@/components/forms/ParticipantForm"
+import { useLocalStorage } from "@uidotdev/usehooks"
+import {v4 as uuidv4} from 'uuid'
+import { Avatar } from "@/components/ui/avatar"
+
 
 export function AddParticipantsStep() {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
+  const [currentGroupId, setCurrentGroupId] = useLocalStorage("cure")
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log("participant form submit")
-    // Do something
+    // console.log("participant form submit")
+    
+
+
     stepper.next()
   }
 

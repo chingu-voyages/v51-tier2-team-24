@@ -15,6 +15,9 @@ import PropTypes from "prop-types";
 import { cn } from "@/lib/utils";
 import { SelectedParticipantsList } from "../SelectedParticipantsList";
 import { PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 // TODO add default values prop (needed in case of edit
 export function ParticipantForm({
@@ -23,15 +26,50 @@ export function ParticipantForm({
   showParticipantsPreview = true,
   className,
 }) {
+
+  const [participantsData, setParticipantsData] = useLocalStorage("participantsData", null);
+  const [formData, setFormData] = useState({
+    id: uuidv4(),
+    firstName: "",
+    lastName: "",
+    // weight: Number("")
+  })
+
+
+  const handleInputChange = (e) => {
+    const {name, value} = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  
+  const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"));
+  const groupsData = JSON.parse(localStorage.getItem("groupsData"))
+  const currentGroup = groupsData.filter((group) => {
+    return currentGroupId === group.id;
+  })
+
+
+  const participantIds = currentGroup[0].participantIds;
+  if(!participantIds.includes(formData.id)){
+    participantIds.push(formData.id)
+  }
+  localStorage.setItem("groupsData", JSON.stringify(groupsData))
+
+
+
+
   return (
     <form className={cn("flex flex-col gap-4", className)} onSubmit={onSubmit}>
       <Label>
         <span className="sr-only">Participant first name</span>
-        <Input name="firstName" type="text" placeholder="First Name" required />
+        <Input onChange={handleInputChange} value={formData.firstName} name="firstName" type="text" placeholder="First Name" required />
       </Label>
       <Label>
         <span className="sr-only">Participant last name</span>
-        <Input name="lastName" type="text" placeholder="Last Name" required />
+        <Input onChange={handleInputChange} value={formData.lastName} name="lastName" type="text" placeholder="Last Name" required />
       </Label>
       <Label>
         <span className="sr-only">Select the contribution weight</span>
