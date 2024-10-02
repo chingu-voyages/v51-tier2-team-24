@@ -1,7 +1,7 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import PropTypes from "prop-types"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import PropTypes from "prop-types";
 
 export function FriendForm({ friendDefaultData = {} }) {
   return (
@@ -11,7 +11,11 @@ export function FriendForm({ friendDefaultData = {} }) {
         placeholder="First Name"
         defaultValue={friendDefaultData?.firstName ?? ""}
       />
-      <Input type="text" placeholder="Last Name" defaultValue={friendDefaultData?.lastName ?? ""} />
+      <Input
+        type="text"
+        placeholder="Last Name"
+        defaultValue={friendDefaultData?.lastName ?? ""}
+      />
       <Label className="space-y-1 flex items-center gap-4 text-muted-foreground">
         <span className="shrink-0">Upload avatar</span>
         <Input disabled type="file" placeholder="test" />
@@ -20,7 +24,7 @@ export function FriendForm({ friendDefaultData = {} }) {
         Submit
       </Button>
     </form>
-  )
+  );
 }
 
 FriendForm.propTypes = {
@@ -28,4 +32,4 @@ FriendForm.propTypes = {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
   }),
-}
+};
