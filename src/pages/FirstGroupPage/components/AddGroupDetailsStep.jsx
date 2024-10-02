@@ -6,7 +6,7 @@ import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
 import { useLocalStorage } from "@uidotdev/usehooks"
 import {v4 as uuidv4} from 'uuid'
 
-export function AddGroupDetailsStep({item}) {
+export function AddGroupDetailsStep() {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
   const [groupsData, setGroupsData] = useLocalStorage("groupsData", null)

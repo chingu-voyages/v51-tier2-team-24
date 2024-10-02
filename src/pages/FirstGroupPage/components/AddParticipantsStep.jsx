@@ -11,7 +11,6 @@ import { Avatar } from "@/components/ui/avatar"
 export function AddParticipantsStep() {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
-  const [currentGroupId, setCurrentGroupId] = useLocalStorage("cure")
 
   const handleSubmit = (e) => {
     e.preventDefault()
