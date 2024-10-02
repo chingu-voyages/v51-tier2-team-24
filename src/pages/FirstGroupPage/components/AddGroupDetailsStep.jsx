@@ -5,13 +5,12 @@ import { BodyText } from "@/components/Typography"
 import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
 import { useLocalStorage } from "@uidotdev/usehooks"
 import {v4 as uuidv4} from 'uuid'
-import { useState } from "react"
-// import { GroupItem } from "./types"
 
 export function AddGroupDetailsStep({item}) {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
-  const [groupsData, setGroupsData] = useState([])
+  const [groupsData, setGroupsData] = useLocalStorage("groupsData", null)
+  const [currentGroupId, setCurrentGroupId] = useLocalStorage("currentGroup", null)
 
   // instructions for saving data in local storage here
   const handleSubmit = (e) => {
@@ -32,18 +31,9 @@ export function AddGroupDetailsStep({item}) {
       receiptIds: [],
     };
 
-
-    const array = {
-      
-    }
-    
-
-    const existingGroups = JSON.parse(localStorage.getItem("groupsData")) || []
-    existingGroups.push(groupDetailsData);
-    setGroupsData(existingGroups);
-    localStorage.setItem("groupsData", JSON.stringify(groupDetailsData));
-
-
+    const updatedGroupsData = groupsData ? [...groupsData, groupDetailsData] : [groupDetailsData];
+    setGroupsData(updatedGroupsData);
+    setCurrentGroupId(groupDetailsData.id);
     stepper.next();
     
   }
