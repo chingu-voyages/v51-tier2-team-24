@@ -43,7 +43,7 @@ export function ParticipantForm({
         [name]: value,
       }))
     }
-
+    
     const handleClick = () => {
       const updatedParticipants = participants ? [...participants, formData] : [formData]
       setParticipants(updatedParticipants);
@@ -55,17 +55,19 @@ export function ParticipantForm({
         balance: Number(0)
         // weight: Number("")
       })
+
+      localStorage.setItem("participantsData", JSON.stringify(updatedParticipants))
     }
 
   return (
     <form className={cn("flex flex-col gap-4", className)} onSubmit={onSubmit}>
       <Label>
         <span className="sr-only">Participant first name</span>
-        <Input onChange={handleInputChange} value={formData.firstName} name="firstName" type="text" placeholder="First Name" required />
+        <Input onChange={handleInputChange} value={formData.firstName} name="firstName" type="text" placeholder="First Name"/>
       </Label>
       <Label>
         <span className="sr-only">Participant last name</span>
-        <Input onChange={handleInputChange} value={formData.lastName} name="lastName" type="text" placeholder="Last Name" required />
+        <Input onChange={handleInputChange} value={formData.lastName} name="lastName" type="text" placeholder="Last Name" />
       </Label>
       <Label>
         <span className="sr-only">Select the contribution weight</span>

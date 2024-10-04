@@ -12,7 +12,7 @@ import {
 import PropTypes from "prop-types"
 import { Button } from "../ui/button"
 import { EXPENSE_CATEGORIES_MOCK, PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { CalendarIcon, Percent } from "lucide-react"
@@ -21,8 +21,16 @@ import { Calendar } from "../ui/calendar"
 import { CONTRIBUTION_WEIGHTS } from "@/lib/constants"
 
 // TODO add default values prop (needed in case of edit
-export function ExpenseForm({ onSubmit, actions, className }) {
-  const [date, setDate] = useState()
+export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
+  const [participants, setParticipants] = useState([])
+
+  useEffect(() => {
+    const participantsData = JSON.parse(localStorage.getItem("participantsData"))
+
+    if(participantsData){
+      setParticipants(participantsData)
+    }
+  })
 
   return (
     <form
@@ -66,7 +74,7 @@ export function ExpenseForm({ onSubmit, actions, className }) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {PARTICIPANTS_MOCK_DATA.map((participant) => (
+              {participants.map((participant) => (
                 <SelectItem
                   key={participant.id}
                   value={participant.firstName + " " + participant.lastName}
@@ -130,6 +138,8 @@ export function ExpenseForm({ onSubmit, actions, className }) {
 ExpenseForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   actions: PropTypes.node,
+  date: PropTypes.instanceOf(Date),
+  setDate: PropTypes.func,
   // defaultValues: PropsTypes.
   className: PropTypes.string,
 }

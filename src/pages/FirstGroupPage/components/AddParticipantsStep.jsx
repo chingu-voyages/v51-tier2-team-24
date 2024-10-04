@@ -6,6 +6,7 @@ import { ParticipantForm } from "@/components/forms/ParticipantForm"
 import { useLocalStorage } from "@uidotdev/usehooks"
 import {v4 as uuidv4} from 'uuid'
 import { Avatar } from "@/components/ui/avatar"
+import { useState } from "react"
 
 
 export function AddParticipantsStep() {
@@ -15,6 +16,7 @@ export function AddParticipantsStep() {
   const handleSubmit = (e) => {
     e.preventDefault()
     // console.log("participant form submit")
+    
     
 
 
