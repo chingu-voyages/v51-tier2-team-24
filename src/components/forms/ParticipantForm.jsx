@@ -14,7 +14,9 @@ import { Button } from "@/components/ui/button";
 import PropTypes from "prop-types";
 import { cn } from "@/lib/utils";
 import { SelectedParticipantsList } from "../SelectedParticipantsList";
-import { PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 // TODO add default values prop (needed in case of edit
 export function ParticipantForm({
@@ -23,15 +25,49 @@ export function ParticipantForm({
   showParticipantsPreview = true,
   className,
 }) {
+
+  const [participants, setParticipants] = useState([])
+  const [formData, setFormData] = useState({
+      id: uuidv4(),
+      firstName: "",
+      lastName: "",
+      avatarUrl: "#",
+      balance: Number(0)
+      // weight: Number("")
+    })
+
+  const handleInputChange = (e) => {
+      const {name, value} = e.target;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
+    }
+    
+    const handleClick = () => {
+      const updatedParticipants = participants ? [...participants, formData] : [formData]
+      setParticipants(updatedParticipants);
+      setFormData({
+        id: uuidv4(),
+        firstName: "",
+        lastName: "",
+        avatarUrl:"#",
+        balance: Number(0)
+        // weight: Number("")
+      })
+
+      localStorage.setItem("participantsData", JSON.stringify(updatedParticipants))
+    }
+
   return (
     <form className={cn("flex flex-col gap-4", className)} onSubmit={onSubmit}>
       <Label>
         <span className="sr-only">Participant first name</span>
-        <Input name="firstName" type="text" placeholder="First Name" required />
+        <Input onChange={handleInputChange} value={formData.firstName} name="firstName" type="text" placeholder="First Name"/>
       </Label>
       <Label>
         <span className="sr-only">Participant last name</span>
-        <Input name="lastName" type="text" placeholder="Last Name" required />
+        <Input onChange={handleInputChange} value={formData.lastName} name="lastName" type="text" placeholder="Last Name" />
       </Label>
       <Label>
         <span className="sr-only">Select the contribution weight</span>
@@ -56,12 +92,12 @@ export function ParticipantForm({
 
       {showParticipantsPreview && (
         <>
-          <Button className="gap-2" type="button" variant="secondary">
+          <Button onClick={handleClick} className="gap-2" type="button" variant="secondary">
             Add<span className="md:hidden">&nbsp;participant</span>
             <Plus className="hidden md:block size-4" />
           </Button>
           <div className="md:col-span-full">
-            <SelectedParticipantsList participants={PARTICIPANTS_MOCK_DATA} />
+            <SelectedParticipantsList participants={participants} />
           </div>
         </>
       )}
