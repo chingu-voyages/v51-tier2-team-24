@@ -5,10 +5,52 @@ import { EXPENSES_MOCK_DATA, PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
 import { ExpensesList } from "@/components/ExpensesList"
 import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { SelectedParticipantsList } from "@/components/SelectedParticipantsList"
+import { useEffect, useState } from "react"
 
 export function LastStep() {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
+
+  const [group, setGroup] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [expenses, setExpenses] = useState([]);
+
+  function getGroup() {
+    const groupsData = JSON.parse(localStorage.getItem("groupsData"));
+    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"));
+
+    const currentGroup = groupsData.find((group) => group.id === currentGroupId);
+
+    setGroup(currentGroup)
+  }
+
+  function getParticipants(){
+    if(!group) return;
+
+    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || [];
+    const participantIds = group.participantIds || [];
+   
+    const matchedParticipants = participantsData.filter((participant) => {
+      return participantIds.includes(participant.id)
+    })
+
+    setParticipants(matchedParticipants);
+  }
+
+  function getExpenses(){
+    
+  }
+
+  useEffect(() => {
+    getGroup();
+
+  }, [])
+
+  useEffect(() => {
+    if (group) {
+      getParticipants();
+    }
+  }, [group]);
 
   return (
     <div className="space-y-10 md:space-y-12">
@@ -21,17 +63,23 @@ export function LastStep() {
         </BodyText>
       </div>
 
-      <GroupInfoWidget
-        groupInfo={{
-          groupName: "Bali Trip",
-          description: "Lorem ipsum dolor sit amet consectetur.",
-          amount: 5000,
-        }}
-      />
+      {group ? (
+        <GroupInfoWidget
+          groupInfo={{
+            groupName: group.name,
+            description: group.description,
+            amount: group.totalBudget,
+          }}
+        />
+
+      ) : (
+        <p>Loading data....</p>
+      )}
+
 
       <section>
         <Heading tag="h3">Participants</Heading>
-        <SelectedParticipantsList participants={PARTICIPANTS_MOCK_DATA} />
+        <SelectedParticipantsList participants={participants} />
       </section>
 
       {EXPENSES_MOCK_DATA ? (

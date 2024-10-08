@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import PropTypes from "prop-types";
 import { cn } from "@/lib/utils";
 import { SelectedParticipantsList } from "../SelectedParticipantsList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useLocalStorage } from "@uidotdev/usehooks";
 
@@ -25,8 +25,9 @@ export function ParticipantForm({
   showParticipantsPreview = true,
   className,
 }) {
-
   const [participants, setParticipants] = useState([])
+  
+
   const [formData, setFormData] = useState({
       id: uuidv4(),
       firstName: "",
@@ -52,11 +53,22 @@ export function ParticipantForm({
         firstName: "",
         lastName: "",
         avatarUrl:"#",
-        balance: Number(0)
-        // weight: Number("")
+        balance: Number(0),
+        weight: Number("")
       })
 
+
       localStorage.setItem("participantsData", JSON.stringify(updatedParticipants))
+      const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"));
+      const groupsData = JSON.parse(localStorage.getItem("groupsData"))
+      
+      for(let i=0; i<groupsData.length; i++){
+        if(currentGroupId == groupsData[i].id){
+          const updatedParticipantIds = groupsData[i].participantIds ? [...groupsData[i].participantIds, formData.id] : [formData.id]
+          groupsData[i].participantIds = updatedParticipantIds;
+        }
+      }
+      localStorage.setItem("groupsData", JSON.stringify(groupsData));
     }
 
   return (
@@ -71,7 +83,7 @@ export function ParticipantForm({
       </Label>
       <Label>
         <span className="sr-only">Select the contribution weight</span>
-        <Select name="contribution">
+        <Select name="contribution" onChange={handleInputChange} value={formData.weight}>
           <SelectTrigger>
             <div className="flex items-center gap-4">
               <Percent className="size-4" />
@@ -81,7 +93,7 @@ export function ParticipantForm({
           <SelectContent>
             <SelectGroup>
               {CONTRIBUTION_WEIGHTS.map((weight) => (
-                <SelectItem key={weight} value={weight}>
+                <SelectItem key={weight} value={weight.toString()}>
                   {`${weight}%`}
                 </SelectItem>
               ))}
