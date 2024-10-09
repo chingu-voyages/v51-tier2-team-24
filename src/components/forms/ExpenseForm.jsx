@@ -98,7 +98,7 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
           <SelectContent>
             <SelectGroup>
               {CONTRIBUTION_WEIGHTS.map((weight) => (
-                <SelectItem key={weight} value={weight}>
+                <SelectItem key={weight} value={weight.toString()}>
                   {`${weight}%`}
                 </SelectItem>
               ))}
