@@ -1,57 +1,67 @@
-import { GroupInfoWidget } from "@/components/GroupInfoWidget"
-import { useParams } from "react-router-dom"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { ChevronDown, Plus, Minus } from "lucide-react"
-import { cn, formatCurrency } from "@/lib/utils"
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { BodyText } from "@/components/Typography"
-import GridCard from "@/components/GridCard"
-import { PageGrid } from "@/components/PageGrid"
-import { CardAction } from "@/components/CardAction"
-import PropTypes from "prop-types"
-import { PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
-import { ChartPie } from "@/components/ChartPie"
-import { ChartBar } from "@/components/ChartBar"
-import { ResponsiveDialog } from "@/components/ResponsiveDialog"
-import { ParticipantForm } from "@/components/forms/ParticipantForm"
-import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
-import { Alert } from "@/components/Alert"
-import { ExpenseForm } from "@/components/forms/ExpenseForm"
+import { GroupInfoWidget } from "@/components/GroupInfoWidget";
+import { useParams } from "react-router-dom";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, Plus, Minus } from "lucide-react";
+import { cn, formatCurrency } from "@/lib/utils";
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BodyText, Heading } from "@/components/Typography";
+import GridCard from "@/components/GridCard";
+import { PageGrid } from "@/components/PageGrid";
+import { CardAction } from "@/components/CardAction";
+import PropTypes from "prop-types";
+import {
+  EXPENSES_MOCK_DATA,
+  PARTICIPANTS_MOCK_DATA,
+  ParticipantType,
+} from "@/lib/mock-data";
+
+import { ChartPie } from "@/components/ChartPie";
+import { ChartBar } from "@/components/ChartBar";
+import { ResponsiveDialog } from "@/components/ResponsiveDialog";
+import { ParticipantForm } from "@/components/forms/ParticipantForm";
+import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm";
+import { Alert } from "@/components/Alert";
+import { ExpenseForm } from "@/components/forms/ExpenseForm";
+import { ExpensesList } from "@/components/ExpensesList";
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
   // eslint-disable-next-line no-unused-vars
-  const { groupId } = useParams()
+  const { groupId } = useParams();
   // eslint-disable-next-line no-unused-vars
   const [groupInfo, setGroupInfo] = useState({
     groupName: "Bali Trip",
     description: "Lorem ipsum dolor sit amet consectetur.",
     amount: 5000,
-  })
+  });
 
   // get expense group data by groupId
 
   const handleEditAction = () => {
-    console.log("Edit")
-  }
+    console.log("Edit");
+  };
   const deleteAction = () => {
     // after deleting the user to be redirected to the dashbord page
-    console.log("Delete")
-  }
+    console.log("Delete");
+  };
   const exportAction = () => {
     // export group data as a PDF or JSON
-    console.log("Export")
-  }
+    console.log("Export");
+  };
 
+  const handleExpenseSubmit = () => {};
   return (
     <>
       <h1 className="sr-only">{groupInfo.groupName} Management</h1>
-
       <GroupInfoWidget
         className="mb-10 md:mb-12 relative"
         groupInfo={groupInfo}
@@ -63,9 +73,14 @@ export function ExpenseGroupPage() {
             <PopoverContent className="w-auto flex flex-col gap-2" align="end">
               <ResponsiveDialog
                 dialogTitle="Edit Group Details"
-                trigger={<CardAction className="border-current">Edit</CardAction>}
+                trigger={
+                  <CardAction className="border-current">Edit</CardAction>
+                }
               >
-                <GroupDetailsForm className="md:flex" onSubmit={handleEditAction} />
+                <GroupDetailsForm
+                  className="md:flex"
+                  onSubmit={handleEditAction}
+                />
               </ResponsiveDialog>
               <Alert
                 trigger={
@@ -89,8 +104,7 @@ export function ExpenseGroupPage() {
           </Popover>
         }
       />
-
-      <Tabs defaultValue="balances" className="w-full">
+      <Tabs defaultValue="balances" className="w-full mb-10 md:mb-12">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="balances">
             Balances
@@ -118,8 +132,20 @@ export function ExpenseGroupPage() {
         {/* Temporaly removed, because this tab has a low priority */}
         {/* <TabsContent value="receipts">Receipts content </TabsContent> */}
       </Tabs>
+      <>
+        <div className="flex flex-row  justify-between">
+          <Heading>Expenses</Heading>
+          <ResponsiveDialog
+            dialogTitle="Add new expense"
+            trigger={<Button className="mb-6 self-end">Add Expense</Button>}
+          >
+            <ExpenseForm onSubmit={handleExpenseSubmit} />
+          </ResponsiveDialog>
+        </div>
+        <ExpensesList expenses={EXPENSES_MOCK_DATA} />
+      </>
     </>
-  )
+  );
 }
 
 // TABS CONTENT
@@ -134,15 +160,18 @@ const Balances = () => {
         </li>
       ))}
     </PageGrid>
-  )
-}
+  );
+};
 
 const BalanceCard = ({ participant, className }) => {
   return (
     <Card className={cn("p-4 flex gap-4 justify-between h-full", className)}>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
-          <BodyText tag="span" className="font-semibold leading-none mb-0 leading-0 shrink-0">
+          <BodyText
+            tag="span"
+            className="font-semibold leading-none mb-0 leading-0 shrink-0"
+          >
             {participant.firstName}
           </BodyText>
           <div className="flex gap-2">
@@ -158,14 +187,16 @@ const BalanceCard = ({ participant, className }) => {
             <PopoverContent className="max-w-56" align="start">
               <ul className="text-sm lg:text-base">
                 <li className="flex items-center gap-2 leading-o text-red-600">
-                  <Minus className="size-4" /> {formatCurrency(Math.abs(300))} to Parker
+                  <Minus className="size-4" /> {formatCurrency(Math.abs(300))}{" "}
+                  to Parker
                 </li>
                 <li className="flex items-center gap-2 leading-o text-green-600">
                   <Plus className="size-4" />
                   {formatCurrency(Math.abs(403))} from Rosendo
                 </li>
                 <li className="flex items-center gap-2 leading-o text-green-600">
-                  <Plus className="size-4" /> {formatCurrency(Math.abs(1000))} from Emily
+                  <Plus className="size-4" /> {formatCurrency(Math.abs(1000))}{" "}
+                  from Emily
                 </li>
               </ul>
             </PopoverContent>
@@ -179,18 +210,18 @@ const BalanceCard = ({ participant, className }) => {
         </AvatarFallback>
       </Avatar>
     </Card>
-  )
-}
+  );
+};
 
 BalanceCard.propTypes = {
   participant: ParticipantType,
   className: PropTypes.string,
-}
+};
 
 const BalanceBadge = ({ amount }) => {
-  const isBalancePositive = amount > 0
-  const isBalanceNegative = amount < 0
-  const isBalanceZero = amount === 0
+  const isBalancePositive = amount > 0;
+  const isBalanceNegative = amount < 0;
+  const isBalanceZero = amount === 0;
 
   return (
     <Badge
@@ -210,23 +241,23 @@ const BalanceBadge = ({ amount }) => {
       &nbsp;
       {isBalanceZero ? amount : formatCurrency(Math.abs(amount))}
     </Badge>
-  )
-}
+  );
+};
 
 BalanceBadge.propTypes = {
   amount: PropTypes.number.isRequired,
-}
+};
 
 const Participants = () => {
   const handleAddParticipant = (event) => {
-    event.preventDefault()
-    console.log("handleAddParticipant: Submit from Participants Tab")
-  }
+    event.preventDefault();
+    console.log("handleAddParticipant: Submit from Participants Tab");
+  };
 
   const handleAddParticipantExpense = (event) => {
-    event.preventDefault()
-    console.log("handleAddParticipantExpense: Submit from Participants Tab")
-  }
+    event.preventDefault();
+    console.log("handleAddParticipantExpense: Submit from Participants Tab");
+  };
 
   return (
     <div className="pt-4 flex flex-col">
@@ -234,21 +265,31 @@ const Participants = () => {
         dialogTitle="Add Participant"
         trigger={<Button className="mb-6 self-end">Add Participant</Button>}
       >
-        <ParticipantForm showParticipantsPreview={false} onSubmit={handleAddParticipant} />
+        <ParticipantForm
+          showParticipantsPreview={false}
+          onSubmit={handleAddParticipant}
+        />
       </ResponsiveDialog>
 
       <PageGrid tag="ul">
         {PARTICIPANTS_MOCK_DATA.map((participant) => (
           <li key={participant.id}>
             <GridCard
-              name={{ firstName: participant.firstName, lastName: participant.lastName }}
+              name={{
+                firstName: participant.firstName,
+                lastName: participant.lastName,
+              }}
               avatarUrl={participant.avatarUrl}
               actions={
                 <>
                   <ResponsiveDialog
                     dialogTitle="New Expense"
                     dialogDescription="Add a new expense made by this participant"
-                    trigger={<CardAction className="border-current">Add Expense</CardAction>}
+                    trigger={
+                      <CardAction className="border-current">
+                        Add Expense
+                      </CardAction>
+                    }
                   >
                     <ExpenseForm onSubmit={handleAddParticipantExpense} />
                   </ResponsiveDialog>
@@ -291,7 +332,9 @@ const Participants = () => {
                           <span className="sr-only">Gets</span>
                           <Plus className="size-4" />
                         </dd>
-                        <dd className="text-green-600">{formatCurrency(500)}</dd>
+                        <dd className="text-green-600">
+                          {formatCurrency(500)}
+                        </dd>
                         <dt className="text-red-600 justify-self-end">
                           <span className="sr-only">Owes</span>
                           <Minus className="size-4" />
@@ -307,8 +350,8 @@ const Participants = () => {
         ))}
       </PageGrid>
     </div>
-  )
-}
+  );
+};
 
 const Statistics = () => {
   return (
@@ -316,5 +359,5 @@ const Statistics = () => {
       <ChartPie />
       <ChartBar />
     </div>
-  )
-}
+  );
+};
