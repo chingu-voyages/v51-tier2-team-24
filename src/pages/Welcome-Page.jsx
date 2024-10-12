@@ -1,6 +1,27 @@
 import AdminForm from "@/components/forms/AdminForm";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function WelcomePage() {
+  const navigate = useNavigate();
+
+  function handleSubmit(e){
+    e.preventDefault();
+
+    const adminData = {
+      firstName: e.target.firstName.value,
+      lastName: e.target.lastName.value,
+      email: e.target.email.value,
+    }
+
+    localStorage.setItem("admin", JSON.stringify(adminData))
+    navigate("/app/first-group");
+    
+  }
+
+
+
   return (
     <div className="welcome-page-container h-screen w-full flex flex-row gap-2  ">
       <div className="welcome-images relative hidden lg:flex  lg:w-[50%] flex-wrap ">
@@ -34,7 +55,7 @@ function WelcomePage() {
             Join now and be among the first to try it out! Just fill out your
             name and email, it’s simple as that!
           </p>
-          <AdminForm></AdminForm>
+          <AdminForm onSubmit={handleSubmit}/>
         </div>
       </div>
     </div>

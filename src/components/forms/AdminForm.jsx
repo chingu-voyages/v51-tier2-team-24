@@ -7,20 +7,19 @@ import { Label } from "../ui/label";
 export default function AdminForm({
   defaultValues = {},
   customSubmitText = "Submit",
+  onSubmit
 }) {
   return (
     <form
       className="grid gap-4 md:grid-cols-2"
-      onSubmit={(e) => {
-        e.preventDefault();
-        // update admin details
-      }}
+      onSubmit={onSubmit}
     >
       <Label className="">
         <span className="sr-only">first name</span>
         <Input
           type="text"
-          placeholder="firstName"
+          placeholder="First Name"
+          name="firstName"
           defaultValue={defaultValues?.firstName ?? ""}
           required
         />
@@ -29,7 +28,8 @@ export default function AdminForm({
         <span className="sr-only">last name</span>
         <Input
           type="text"
-          placeholder="lastName"
+          placeholder="Last Name"
+          name="lastName"
           defaultValue={defaultValues?.lastName ?? ""}
           required
         />
@@ -39,6 +39,7 @@ export default function AdminForm({
         <Input
           type="email"
           placeholder="Email"
+          name="email"
           defaultValue={defaultValues?.email ?? ""}
           required
         />
