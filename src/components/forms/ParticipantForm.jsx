@@ -33,8 +33,8 @@ export function ParticipantForm({
       firstName: "",
       lastName: "",
       avatarUrl: "#",
-      balance: Number(0)
-      // weight: Number("")
+      balance: Number(0),
+      weight: Number(""),
     })
 
   const handleInputChange = (e) => {
@@ -83,7 +83,7 @@ export function ParticipantForm({
       </Label>
       <Label>
         <span className="sr-only">Select the contribution weight</span>
-        <Select name="contribution" onChange={handleInputChange} value={formData.weight}>
+        <Select name="contribution" onChange={handleInputChange} value={Number(formData.weight)}>
           <SelectTrigger>
             <div className="flex items-center gap-4">
               <Percent className="size-4" />

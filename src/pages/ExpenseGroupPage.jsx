@@ -1,48 +1,40 @@
-import { GroupInfoWidget } from "@/components/GroupInfoWidget";
-import { useParams } from "react-router-dom";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, Plus, Minus } from "lucide-react";
-import { cn, formatCurrency } from "@/lib/utils";
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BodyText, Heading } from "@/components/Typography";
-import GridCard from "@/components/GridCard";
-import { PageGrid } from "@/components/PageGrid";
-import { CardAction } from "@/components/CardAction";
-import PropTypes from "prop-types";
-import {
-  EXPENSES_MOCK_DATA,
-  PARTICIPANTS_MOCK_DATA,
-  ParticipantType,
-} from "@/lib/mock-data";
-
-import { ChartPie } from "@/components/ChartPie";
-import { ChartBar } from "@/components/ChartBar";
-import { ResponsiveDialog } from "@/components/ResponsiveDialog";
-import { ParticipantForm } from "@/components/forms/ParticipantForm";
-import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm";
-import { Alert } from "@/components/Alert";
-import { ExpenseForm } from "@/components/forms/ExpenseForm";
-import { ExpensesList } from "@/components/ExpensesList";
+import { GroupInfoWidget } from "@/components/GroupInfoWidget"
+import { useParams } from "react-router-dom"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+import { ChevronDown, Plus, Minus } from "lucide-react"
+import { cn, formatCurrency } from "@/lib/utils"
+import { useEffect, useState } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { BodyText } from "@/components/Typography"
+import GridCard from "@/components/GridCard"
+import { PageGrid } from "@/components/PageGrid"
+import { CardAction } from "@/components/CardAction"
+import PropTypes from "prop-types"
+import { PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
+import { ChartPie } from "@/components/ChartPie"
+import { ChartBar } from "@/components/ChartBar"
+import { ResponsiveDialog } from "@/components/ResponsiveDialog"
+import { ParticipantForm } from "@/components/forms/ParticipantForm"
+import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
+import { Alert } from "@/components/Alert"
+import { ExpenseForm } from "@/components/forms/ExpenseForm"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
   // eslint-disable-next-line no-unused-vars
   const { groupId } = useParams();
   // eslint-disable-next-line no-unused-vars
-  const [groupInfo, setGroupInfo] = useState({
-    groupName: "Bali Trip",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    amount: 5000,
-  });
+  // const [groupInfo, setGroupInfo] = useState({
+  //   groupName: "Bali Trip",
+  //   description: "Lorem ipsum dolor sit amet consectetur.",
+  //   amount: 5000,
+  // })
+
+  const [groupInfo, setGroupInfo] = useState(null);
 
   // get expense group data by groupId
 
@@ -58,7 +50,24 @@ export function ExpenseGroupPage() {
     console.log("Export");
   };
 
-  const handleExpenseSubmit = () => {};
+  function getGroup(){
+    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
+    const groupsData = JSON.parse(localStorage.getItem("groupsData"))
+
+    const groupData = groupsData.filter((group) => {
+      return group.id === currentGroupId;
+    })
+
+    setGroupInfo(groupData);
+
+  }
+
+  useEffect(() => {
+    getGroup();
+  }, [])
+
+  
+
   return (
     <>
       <h1 className="sr-only">{groupInfo.groupName} Management</h1>

@@ -1,5 +1,6 @@
 import AdminForm from "@/components/forms/AdminForm";
 import { useLocalStorage } from "@uidotdev/usehooks";
+import { Weight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +14,9 @@ function WelcomePage() {
       firstName: e.target.firstName.value,
       lastName: e.target.lastName.value,
       email: e.target.email.value,
+      avatarUrl: "#",
+      balance: Number(0),
+      Weight: Number(0),
     }
 
     localStorage.setItem("admin", JSON.stringify(adminData))
