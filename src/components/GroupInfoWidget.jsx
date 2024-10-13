@@ -13,7 +13,7 @@ export function GroupInfoWidget({ groupInfo, actions, className }) {
           <Avatar className="h-20 w-20">
             <AvatarImage src="#" />
             <AvatarFallback className="text-4xl bg-slate-300 dark:text-secondary">
-              {groupInfo.groupName.substring(0, 2).toUpperCase()}
+              {groupInfo.name.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <Badge
@@ -25,10 +25,10 @@ export function GroupInfoWidget({ groupInfo, actions, className }) {
         </div>
 
         <div className="space-y-1.5 flex flex-col justify-between flex-1">
-          <CardTitle className="text-2xl font-b">{groupInfo.groupName}</CardTitle>
+          <CardTitle className="text-2xl font-b">{groupInfo.name}</CardTitle>
           <CardDescription>{groupInfo.description}</CardDescription>
           <BodyText variant="small" tag="p" className="text-green-600 leading-none">
-            Allotted: {formatCurrency(groupInfo.amount)}
+            Allotted: {formatCurrency(groupInfo.totalBudget)}
           </BodyText>
         </div>
         <div className="ml-auto">{actions}</div>
@@ -39,9 +39,9 @@ export function GroupInfoWidget({ groupInfo, actions, className }) {
 
 GroupInfoWidget.propTypes = {
   groupInfo: PropTypes.shape({
-    groupName: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired,
+    totalBudget: PropTypes.number.isRequired,
   }),
   actions: PropTypes.node,
   className: PropTypes.string,

@@ -24,7 +24,7 @@ export function SidenavLists() {
 
   useEffect(() => {
     getGroups();
-  }, [groups])
+  }, [])
 
 
   return (

@@ -14,7 +14,7 @@ import GridCard from "@/components/GridCard"
 import { PageGrid } from "@/components/PageGrid"
 import { CardAction } from "@/components/CardAction"
 import PropTypes from "prop-types"
-import { PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
+import { EXPENSES_MOCK_DATA, PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
 import { ChartPie } from "@/components/ChartPie"
 import { ChartBar } from "@/components/ChartBar"
 import { ResponsiveDialog } from "@/components/ResponsiveDialog"
@@ -22,19 +22,20 @@ import { ParticipantForm } from "@/components/forms/ParticipantForm"
 import { GroupDetailsForm } from "@/components/forms/GroupDetailsForm"
 import { Alert } from "@/components/Alert"
 import { ExpenseForm } from "@/components/forms/ExpenseForm"
+import { Heading } from "@/components/Typography"
+import { ExpensesList } from "@/components/ExpensesList"
 
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
   // eslint-disable-next-line no-unused-vars
   const { groupId } = useParams();
   // eslint-disable-next-line no-unused-vars
-  // const [groupInfo, setGroupInfo] = useState({
-  //   groupName: "Bali Trip",
-  //   description: "Lorem ipsum dolor sit amet consectetur.",
-  //   amount: 5000,
-  // })
-
-  const [groupInfo, setGroupInfo] = useState(null);
+  const [groupInfo, setGroupInfo] = useState({
+    name: "Bali Trip",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    totalBudget: 5000,
+  })
+  const [participants, setParticipants] = useState([]);
 
   // get expense group data by groupId
 
@@ -51,26 +52,45 @@ export function ExpenseGroupPage() {
   };
 
   function getGroup(){
-    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
+    // const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
     const groupsData = JSON.parse(localStorage.getItem("groupsData"))
 
     const groupData = groupsData.filter((group) => {
-      return group.id === currentGroupId;
+      return group.id === groupId;
     })
 
-    setGroupInfo(groupData);
+    setGroupInfo(groupData[0]);
 
+  }
+
+  function getParticipants(){
+    if(!groupInfo) return;
+
+    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || [];
+    const participantIds = groupInfo.participantIds || [];
+   
+    const matchedParticipants = participantsData.filter((participant) => {
+      return participantIds.includes(participant.id)
+    })
+
+    setParticipants(matchedParticipants);
   }
 
   useEffect(() => {
     getGroup();
+    getParticipants();
+    // console.log(groupInfo)
   }, [])
 
+  function handleExpenseSubmit(){
+    return console.log("clicked")
+  }
+  
   
 
   return (
     <>
-      <h1 className="sr-only">{groupInfo.groupName} Management</h1>
+      <h1 className="sr-only">{groupInfo.name} Management</h1>
       <GroupInfoWidget
         className="mb-10 md:mb-12 relative"
         groupInfo={groupInfo}
