@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button"
 import { ChevronDown, Plus, Minus } from "lucide-react"
 import { cn, formatCurrency } from "@/lib/utils"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -28,11 +28,13 @@ export function ExpenseGroupPage() {
   // eslint-disable-next-line no-unused-vars
   const { groupId } = useParams()
   // eslint-disable-next-line no-unused-vars
-  const [groupInfo, setGroupInfo] = useState({
-    groupName: "Bali Trip",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    amount: 5000,
-  })
+  // const [groupInfo, setGroupInfo] = useState({
+  //   groupName: "Bali Trip",
+  //   description: "Lorem ipsum dolor sit amet consectetur.",
+  //   amount: 5000,
+  // })
+
+  const [groupInfo, setGroupInfo] = useState(null);
 
   // get expense group data by groupId
 
@@ -47,6 +49,24 @@ export function ExpenseGroupPage() {
     // export group data as a PDF or JSON
     console.log("Export")
   }
+
+  function getGroup(){
+    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
+    const groupsData = JSON.parse(localStorage.getItem("groupsData"))
+
+    const groupData = groupsData.filter((group) => {
+      return group.id === currentGroupId;
+    })
+
+    setGroupInfo(groupData);
+
+  }
+
+  useEffect(() => {
+    getGroup();
+  }, [])
+
+  
 
   return (
     <>

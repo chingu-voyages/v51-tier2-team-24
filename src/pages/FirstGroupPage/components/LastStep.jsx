@@ -38,12 +38,20 @@ export function LastStep() {
   }
 
   function getExpenses(){
-    
+    if(!group) return;
+
+    const expensesData = JSON.parse(localStorage.getItem("expensesData")) || [];
+    const expenseIds = group.expenseIds || [];
+
+    const matchedExpenses = expensesData.filter((expense) => {
+      return expenseIds.includes(expense.id);
+    })
+    setExpenses(matchedExpenses);
   }
 
   useEffect(() => {
     getGroup();
-
+    getExpenses();
   }, [])
 
   useEffect(() => {
@@ -82,10 +90,10 @@ export function LastStep() {
         <SelectedParticipantsList participants={participants} />
       </section>
 
-      {EXPENSES_MOCK_DATA ? (
+      {expenses ? (
         <section>
           <Heading tag="h3">Expenses</Heading>
-          <ExpensesList expenses={EXPENSES_MOCK_DATA} />
+          <ExpensesList expenses={expenses} />
         </section>
       ) : null}
 

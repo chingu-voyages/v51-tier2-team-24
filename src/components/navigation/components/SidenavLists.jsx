@@ -2,16 +2,31 @@ import { NAV_LINKS } from "@/lib/nav-links"
 import { NavLink } from "react-router-dom"
 import { cn, getInitials } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useEffect, useState } from "react"
 
-const MOCK_GROUP_LIST = [
-  { name: "Bali Trip", avatar: "#", id: "random_id_1" },
-  { name: "Hawaii Trip", avatar: "#", id: "random_id_2" },
-  { name: "Mike's Birthday", avatar: "#", id: "random_id_3" },
-  { name: "John's Birthday", avatar: "#", id: "random_id_4" },
-  { name: "Escape Room", avatar: "#", id: "random_id_5" },
-]
+// const MOCK_GROUP_LIST = [
+//   { name: "Bali Trip", avatar: "#", id: "random_id_1" },
+//   { name: "Hawaii Trip", avatar: "#", id: "random_id_2" },
+//   { name: "Mike's Birthday", avatar: "#", id: "random_id_3" },
+//   { name: "John's Birthday", avatar: "#", id: "random_id_4" },
+//   { name: "Escape Room", avatar: "#", id: "random_id_5" },
+// ]
 
 export function SidenavLists() {
+
+  const [groups, setGroups] = useState([]);
+
+  function getGroups() {
+    const groupsData = JSON.parse(localStorage.getItem("groupsData"));
+
+    setGroups(groupsData)
+  }
+
+  useEffect(() => {
+    getGroups();
+  }, [groups])
+
+
   return (
     <>
       <nav className="pl-4">
@@ -41,7 +56,7 @@ export function SidenavLists() {
       <section className="pl-4">
         <h2 className="font-bold mb-4">Your recent groups</h2>
         <ul className="space-y-2">
-          {MOCK_GROUP_LIST.map((group) => (
+          {groups.map((group) => (
             <li key={group.id}>
               <NavLink
                 to={`/app/groups/${group.id}`}

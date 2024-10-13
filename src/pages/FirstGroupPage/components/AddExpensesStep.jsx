@@ -32,7 +32,17 @@ export function AddExpensesStep() {
   
       const updatedExpensesData = expensesData ? [...expensesData, expenseDetailsData] : [expenseDetailsData];
       setExpensesData(updatedExpensesData);
-      // setCurrentGroupId(groupDetailsData.id);
+      
+      const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
+      const groupsData = JSON.parse(localStorage.getItem("groupsData"))
+
+      for(let i=0; i<groupsData.length; i++){
+        if(currentGroupId == groupsData[i].id){
+          const updatedExpenseIds = groupsData[i].expenseIds ? [...groupsData[i].expenseIds, expenseDetailsData.id] : [expenseDetailsData.id]
+          groupsData[i].expenseIds = updatedExpenseIds;
+        }
+      }
+      localStorage.setItem("groupsData", JSON.stringify(groupsData))
       stepper.next();
   }
 
