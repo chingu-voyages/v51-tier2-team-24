@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -44,7 +45,9 @@ export default function AdminForm({
           required
         />
       </Label>
-      <Button className="md:col-span-full">{customSubmitText}</Button>
+      <Button className="md:col-span-full" href="/app/first-group">
+        {customSubmitText}
+      </Button>
     </form>
   );
 }
