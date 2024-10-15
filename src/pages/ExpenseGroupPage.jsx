@@ -28,65 +28,62 @@ import { ExpensesList } from "@/components/ExpensesList"
 export function ExpenseGroupPage() {
   // TODO remove the bottom disablers after the getting data functionality is done
   // eslint-disable-next-line no-unused-vars
-  const { groupId } = useParams();
+  const { groupId } = useParams()
   // eslint-disable-next-line no-unused-vars
   const [groupInfo, setGroupInfo] = useState({
     name: "Bali Trip",
     description: "Lorem ipsum dolor sit amet consectetur.",
     totalBudget: 5000,
   })
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState([])
 
   // get expense group data by groupId
 
   const handleEditAction = () => {
-    console.log("Edit");
-  };
+    console.log("Edit")
+  }
   const deleteAction = () => {
     // after deleting the user to be redirected to the dashbord page
-    console.log("Delete");
-  };
+    console.log("Delete")
+  }
   const exportAction = () => {
     // export group data as a PDF or JSON
-    console.log("Export");
-  };
+    console.log("Export")
+  }
 
-  function getGroup(){
+  function getGroup() {
     // const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
     const groupsData = JSON.parse(localStorage.getItem("groupsData"))
 
     const groupData = groupsData.filter((group) => {
-      return group.id === groupId;
+      return group.id === groupId
     })
 
-    setGroupInfo(groupData[0]);
-
+    setGroupInfo(groupData[0])
   }
 
-  function getParticipants(){
-    if(!groupInfo) return;
+  function getParticipants() {
+    if (!groupInfo) return
 
-    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || [];
-    const participantIds = groupInfo.participantIds || [];
-   
+    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || []
+    const participantIds = groupInfo.participantIds || []
+
     const matchedParticipants = participantsData.filter((participant) => {
       return participantIds.includes(participant.id)
     })
 
-    setParticipants(matchedParticipants);
+    setParticipants(matchedParticipants)
   }
 
   useEffect(() => {
-    getGroup();
-    getParticipants();
+    getGroup()
+    getParticipants()
     // console.log(groupInfo)
   }, [])
 
-  function handleExpenseSubmit(){
+  function handleExpenseSubmit() {
     return console.log("clicked")
   }
-  
-  
 
   return (
     <>
@@ -102,14 +99,9 @@ export function ExpenseGroupPage() {
             <PopoverContent className="w-auto flex flex-col gap-2" align="end">
               <ResponsiveDialog
                 dialogTitle="Edit Group Details"
-                trigger={
-                  <CardAction className="border-current">Edit</CardAction>
-                }
+                trigger={<CardAction className="border-current">Edit</CardAction>}
               >
-                <GroupDetailsForm
-                  className="md:flex"
-                  onSubmit={handleEditAction}
-                />
+                <GroupDetailsForm className="md:flex" onSubmit={handleEditAction} />
               </ResponsiveDialog>
               <Alert
                 trigger={
@@ -174,7 +166,7 @@ export function ExpenseGroupPage() {
         <ExpensesList expenses={EXPENSES_MOCK_DATA} />
       </>
     </>
-  );
+  )
 }
 
 // TABS CONTENT
@@ -189,18 +181,15 @@ const Balances = () => {
         </li>
       ))}
     </PageGrid>
-  );
-};
+  )
+}
 
 const BalanceCard = ({ participant, className }) => {
   return (
     <Card className={cn("p-4 flex gap-4 justify-between h-full", className)}>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
-          <BodyText
-            tag="span"
-            className="font-semibold leading-none mb-0 leading-0 shrink-0"
-          >
+          <BodyText tag="span" className="font-semibold leading-none mb-0 leading-0 shrink-0">
             {participant.firstName}
           </BodyText>
           <div className="flex gap-2">
@@ -216,16 +205,14 @@ const BalanceCard = ({ participant, className }) => {
             <PopoverContent className="max-w-56" align="start">
               <ul className="text-sm lg:text-base">
                 <li className="flex items-center gap-2 leading-o text-red-600">
-                  <Minus className="size-4" /> {formatCurrency(Math.abs(300))}{" "}
-                  to Parker
+                  <Minus className="size-4" /> {formatCurrency(Math.abs(300))} to Parker
                 </li>
                 <li className="flex items-center gap-2 leading-o text-green-600">
                   <Plus className="size-4" />
                   {formatCurrency(Math.abs(403))} from Rosendo
                 </li>
                 <li className="flex items-center gap-2 leading-o text-green-600">
-                  <Plus className="size-4" /> {formatCurrency(Math.abs(1000))}{" "}
-                  from Emily
+                  <Plus className="size-4" /> {formatCurrency(Math.abs(1000))} from Emily
                 </li>
               </ul>
             </PopoverContent>
@@ -239,18 +226,18 @@ const BalanceCard = ({ participant, className }) => {
         </AvatarFallback>
       </Avatar>
     </Card>
-  );
-};
+  )
+}
 
 BalanceCard.propTypes = {
   participant: ParticipantType,
   className: PropTypes.string,
-};
+}
 
 const BalanceBadge = ({ amount }) => {
-  const isBalancePositive = amount > 0;
-  const isBalanceNegative = amount < 0;
-  const isBalanceZero = amount === 0;
+  const isBalancePositive = amount > 0
+  const isBalanceNegative = amount < 0
+  const isBalanceZero = amount === 0
 
   return (
     <Badge
@@ -270,23 +257,23 @@ const BalanceBadge = ({ amount }) => {
       &nbsp;
       {isBalanceZero ? amount : formatCurrency(Math.abs(amount))}
     </Badge>
-  );
-};
+  )
+}
 
 BalanceBadge.propTypes = {
   amount: PropTypes.number.isRequired,
-};
+}
 
 const Participants = () => {
   const handleAddParticipant = (event) => {
-    event.preventDefault();
-    console.log("handleAddParticipant: Submit from Participants Tab");
-  };
+    event.preventDefault()
+    console.log("handleAddParticipant: Submit from Participants Tab")
+  }
 
   const handleAddParticipantExpense = (event) => {
-    event.preventDefault();
-    console.log("handleAddParticipantExpense: Submit from Participants Tab");
-  };
+    event.preventDefault()
+    console.log("handleAddParticipantExpense: Submit from Participants Tab")
+  }
 
   return (
     <div className="pt-4 flex flex-col">
@@ -294,10 +281,7 @@ const Participants = () => {
         dialogTitle="Add Participant"
         trigger={<Button className="mb-6 self-end">Add Participant</Button>}
       >
-        <ParticipantForm
-          showParticipantsPreview={false}
-          onSubmit={handleAddParticipant}
-        />
+        <ParticipantForm showParticipantsPreview={false} onSubmit={handleAddParticipant} />
       </ResponsiveDialog>
 
       <PageGrid tag="ul">
@@ -314,11 +298,7 @@ const Participants = () => {
                   <ResponsiveDialog
                     dialogTitle="New Expense"
                     dialogDescription="Add a new expense made by this participant"
-                    trigger={
-                      <CardAction className="border-current">
-                        Add Expense
-                      </CardAction>
-                    }
+                    trigger={<CardAction className="border-current">Add Expense</CardAction>}
                   >
                     <ExpenseForm onSubmit={handleAddParticipantExpense} />
                   </ResponsiveDialog>
@@ -361,9 +341,7 @@ const Participants = () => {
                           <span className="sr-only">Gets</span>
                           <Plus className="size-4" />
                         </dd>
-                        <dd className="text-green-600">
-                          {formatCurrency(500)}
-                        </dd>
+                        <dd className="text-green-600">{formatCurrency(500)}</dd>
                         <dt className="text-red-600 justify-self-end">
                           <span className="sr-only">Owes</span>
                           <Minus className="size-4" />
@@ -379,8 +357,8 @@ const Participants = () => {
         ))}
       </PageGrid>
     </div>
-  );
-};
+  )
+}
 
 const Statistics = () => {
   return (
@@ -388,5 +366,5 @@ const Statistics = () => {
       <ChartPie />
       <ChartBar />
     </div>
-  );
-};
+  )
+}

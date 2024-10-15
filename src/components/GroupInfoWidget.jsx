@@ -28,7 +28,7 @@ export function GroupInfoWidget({ groupInfo, actions, className }) {
           <CardTitle className="text-2xl font-b">{groupInfo.name}</CardTitle>
           <CardDescription>{groupInfo.description}</CardDescription>
           <BodyText variant="small" tag="p" className="text-green-600 leading-none">
-            Allotted: {formatCurrency(groupInfo.totalBudget)}
+            Allotted: {formatCurrency(+groupInfo.totalBudget)}
           </BodyText>
         </div>
         <div className="ml-auto">{actions}</div>
