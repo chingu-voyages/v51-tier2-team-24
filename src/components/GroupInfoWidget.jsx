@@ -6,6 +6,7 @@ import PropTypes from "prop-types"
 import { BodyText } from "./Typography"
 
 export function GroupInfoWidget({ groupInfo, actions, className }) {
+  console.log(groupInfo)
   return (
     <Card className={cn("group-details-card flex", className)}>
       <CardHeader className="flex flex-row gap-4 space-y-0 w-full">
