@@ -11,54 +11,54 @@ export function LastStep() {
   const { useStepper } = useFirstGroupPageContext()
   const stepper = useStepper()
 
-  const [group, setGroup] = useState(null);
-  const [participants, setParticipants] = useState([]);
-  const [expenses, setExpenses] = useState([]);
+  const [group, setGroup] = useState(null)
+  const [participants, setParticipants] = useState([])
+  const [expenses, setExpenses] = useState([])
 
   function getGroup() {
-    const groupsData = JSON.parse(localStorage.getItem("groupsData"));
-    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"));
+    const groupsData = JSON.parse(localStorage.getItem("groupsData"))
+    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
 
-    const currentGroup = groupsData.find((group) => group.id === currentGroupId);
+    const currentGroup = groupsData.find((group) => group.id === currentGroupId)
 
     setGroup(currentGroup)
   }
 
-  function getParticipants(){
-    if(!group) return;
+  function getParticipants() {
+    if (!group) return
 
-    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || [];
-    const participantIds = group.participantIds || [];
-   
+    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || []
+    const participantIds = group.participantIds || []
+
     const matchedParticipants = participantsData.filter((participant) => {
       return participantIds.includes(participant.id)
     })
 
-    setParticipants(matchedParticipants);
+    setParticipants(matchedParticipants)
   }
 
-  function getExpenses(){
-    if(!group) return;
+  function getExpenses() {
+    if (!group) return
 
-    const expensesData = JSON.parse(localStorage.getItem("expensesData")) || [];
-    const expenseIds = group.expenseIds || [];
+    const expensesData = JSON.parse(localStorage.getItem("expensesData")) || []
+    const expenseIds = group.expenseIds || []
 
     const matchedExpenses = expensesData.filter((expense) => {
-      return expenseIds.includes(expense.id);
+      return expenseIds.includes(expense.id)
     })
-    setExpenses(matchedExpenses);
+    setExpenses(matchedExpenses)
   }
 
   useEffect(() => {
-    getGroup();
-    getExpenses();
+    getGroup()
+    getExpenses()
   }, [])
 
   useEffect(() => {
     if (group) {
-      getParticipants();
+      getParticipants()
     }
-  }, [group]);
+  }, [group])
 
   return (
     <div className="space-y-10 md:space-y-12">
@@ -74,16 +74,14 @@ export function LastStep() {
       {group ? (
         <GroupInfoWidget
           groupInfo={{
-            groupName: group.name,
+            name: group.name,
             description: group.description,
-            amount: group.totalBudget,
+            totalBudget: group.totalBudget,
           }}
         />
-
       ) : (
         <p>Loading data....</p>
       )}
-
 
       <section>
         <Heading tag="h3">Participants</Heading>
