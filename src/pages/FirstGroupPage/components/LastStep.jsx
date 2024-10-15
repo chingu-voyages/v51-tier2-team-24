@@ -76,7 +76,7 @@ export function LastStep() {
           groupInfo={{
             name: group.name,
             description: group.description,
-            amount: group.totalBudget,
+            totalBudget: group.totalBudget,
           }}
         />
       ) : (

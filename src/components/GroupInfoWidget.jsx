@@ -6,6 +6,7 @@ import PropTypes from "prop-types"
 import { BodyText } from "./Typography"
 
 export function GroupInfoWidget({ groupInfo, actions, className }) {
+  console.log(groupInfo)
   return (
     <Card className={cn("group-details-card flex", className)}>
       <CardHeader className="flex flex-row gap-4 space-y-0 w-full">
@@ -28,7 +29,7 @@ export function GroupInfoWidget({ groupInfo, actions, className }) {
           <CardTitle className="text-2xl font-b">{groupInfo.name}</CardTitle>
           <CardDescription>{groupInfo.description}</CardDescription>
           <BodyText variant="small" tag="p" className="text-green-600 leading-none">
-            Allotted: {formatCurrency(+groupInfo.totalBudget)}
+            Allotted: {formatCurrency(groupInfo.totalBudget)}
           </BodyText>
         </div>
         <div className="ml-auto">{actions}</div>
