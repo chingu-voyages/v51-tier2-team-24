@@ -25,3 +25,9 @@ export const FIRST_GROUP_STEPS = [
       "Review the details and finalize the group setup. You'll be able to see insights like balances and statistics, and manage the expense group from the dashboard.",
   },
 ]
+
+export const LOCAL_STORAGE_KEYS = {
+  ADMIN: "admin",
+  GROUPS: "groupsData",
+  PARTICIPANTS: "participantsData",
+}

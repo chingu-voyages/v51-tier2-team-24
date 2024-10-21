@@ -1,6 +1,6 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
   SelectContent,
@@ -8,34 +8,20 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import PropTypes from "prop-types";
-import { Button } from "../ui/button";
-import {
-  EXPENSE_CATEGORIES_MOCK,
-  PARTICIPANTS_MOCK_DATA,
-} from "@/lib/mock-data";
-import { useEffect, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon, Percent } from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "../ui/calendar";
-import { CONTRIBUTION_WEIGHTS } from "@/lib/constants";
+} from "@/components/ui/select"
+import PropTypes from "prop-types"
+import { Button } from "../ui/button"
+import { EXPENSE_CATEGORIES_MOCK } from "@/lib/mock-data"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { cn } from "@/lib/utils"
+import { CalendarIcon, Percent } from "lucide-react"
+import { format } from "date-fns"
+import { Calendar } from "../ui/calendar"
+import { CONTRIBUTION_WEIGHTS, LOCAL_STORAGE_KEYS } from "@/lib/constants"
+import { useLocalStorage } from "@uidotdev/usehooks"
 
-// TODO add default values prop (needed in case of edit
 export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
-  const [participants, setParticipants] = useState([]);
-
-  useEffect(() => {
-    const participantsData = JSON.parse(
-      localStorage.getItem("participantsData")
-    );
-
-    if (participantsData) {
-      setParticipants(participantsData);
-    }
-  }, []);
+  const [participants] = useLocalStorage(LOCAL_STORAGE_KEYS.PARTICIPANTS, [])
 
   return (
     <form
@@ -115,28 +101,18 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
         <PopoverTrigger asChild>
           <Button
             variant={"outline"}
-            className={cn(
-              "justify-start md:self-end",
-              !date && "text-muted-foreground"
-            )}
+            className={cn("justify-start md:self-end", !date && "text-muted-foreground")}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {date ? format(date, "PPP") : <span>Purchase date</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
+          <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
         </PopoverContent>
       </Popover>
       <Label>
-        <span className="inline-block mb-2">
-          Receipt proof (can be uploaded later)
-        </span>
+        <span className="inline-block mb-2">Receipt proof (can be uploaded later)</span>
         <Input name="expenseReceipt" type="file" />
       </Label>
       {actions ? (
@@ -147,7 +123,7 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
         </Button>
       )}
     </form>
-  );
+  )
 }
 
 ExpenseForm.propTypes = {
@@ -157,4 +133,4 @@ ExpenseForm.propTypes = {
   setDate: PropTypes.func,
   // defaultValues: PropsTypes.
   className: PropTypes.string,
-};
+}

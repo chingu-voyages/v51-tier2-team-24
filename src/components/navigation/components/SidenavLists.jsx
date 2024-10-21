@@ -3,9 +3,10 @@ import { NavLink } from "react-router-dom"
 import { cn, getInitials } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useLocalStorage } from "@uidotdev/usehooks"
+import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
 
 export function SidenavLists() {
-  const [groups] = useLocalStorage("groupsData", null)
+  const [groups] = useLocalStorage(LOCAL_STORAGE_KEYS.GROUPS, null)
 
   return (
     <>

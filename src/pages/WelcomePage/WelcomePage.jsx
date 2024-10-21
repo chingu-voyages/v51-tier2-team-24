@@ -1,8 +1,15 @@
 import AdminForm from "@/components/forms/AdminForm"
+import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
+import { useLocalStorage } from "@uidotdev/usehooks"
 import { useNavigate } from "react-router-dom"
+import { v4 as uuidv4 } from "uuid"
 
 function WelcomePage() {
   const navigate = useNavigate()
+  // eslint-disable-next-line no-unused-vars
+  const [admin, setAdmin] = useLocalStorage(LOCAL_STORAGE_KEYS.ADMIN, null)
+  // eslint-disable-next-line no-unused-vars
+  const [participants, setParticipants] = useLocalStorage(LOCAL_STORAGE_KEYS.PARTICIPANTS, null)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -10,18 +17,21 @@ function WelcomePage() {
     const adminData = {
       firstName: e.target.firstName.value,
       lastName: e.target.lastName.value,
+      balance: 0,
+      avatarUrl: null,
       email: e.target.email.value,
-      avatarUrl: "#",
-      balance: Number(0),
-      Weight: Number(0),
+      role: "admin",
+      id: uuidv4(),
     }
 
-    localStorage.setItem("admin", JSON.stringify(adminData))
+    setAdmin(adminData)
+    setParticipants([adminData])
     navigate("/app/first-group")
   }
 
   return (
     <div className="welcome-page-container h-screen w-full flex flex-row gap-2  ">
+      {/* TODO images need to be optimized */}
       <div className="welcome-images relative hidden lg:flex  lg:w-[50%] flex-wrap ">
         {[1, 2, 3, 4, 5, 6].map((num) => (
           <img
