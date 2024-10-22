@@ -13,6 +13,8 @@ import { ImageOff, ZoomIn } from "lucide-react"
 import { Input } from "./ui/input"
 import { ExpenseType } from "@/lib/mock-data"
 import { format } from "date-fns"
+import { useState } from "react"
+import { uploadFile } from "@/FirebaseConfig"
 
 export function ExpensesList({ expenses }) {
   return (
@@ -81,7 +83,16 @@ const ExpenseDetails = ({ expense }) => {
   )
 }
 
-const ExpenseReceipt = ({ receiptUrl }) => (
+const ExpenseReceipt = ({ receiptUrl }) => {
+  const [receiptImage, setReceiptImage] = useState();
+
+  const handleUpload = (e) => {
+    e.preventDefault();
+    uploadFile(receiptImage);
+  }
+
+
+  return (
   <div className="receipt-container w-full h-full max-w-[22.5rem] sm:w-3/4 bg-slate-200 p-2 self-center md:self-auto md:-order-1 relative">
     <AspectRatio className="flex items-center justify-center" ratio={4 / 3}>
       {receiptUrl ? (
@@ -110,10 +121,10 @@ const ExpenseReceipt = ({ receiptUrl }) => (
           <p className="text-slate-500 text-sm mb-4">Upload an image to view the receipt</p>
           <form
             className="max-w-[80%] flex gap-2 items-center"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={handleUpload}
           >
-            <Input disabled type="file" placeholder="test" />
-            <Button disabled size="sm" variant="secondary" type="submit">
+            <Input type="file" placeholder="test" onChange={(e) => {setReceiptImage(e.target.files[0])}} />
+            <Button size="sm" variant="secondary" type="submit">
               Upload
             </Button>
           </form>
@@ -121,7 +132,8 @@ const ExpenseReceipt = ({ receiptUrl }) => (
       )}
     </AspectRatio>
   </div>
-)
+  )
+}
 
 ExpenseDetails.propTypes = {
   expense: ExpenseType.isRequired,
