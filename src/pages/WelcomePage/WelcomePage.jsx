@@ -7,9 +7,7 @@ import { v4 as uuidv4 } from "uuid"
 function WelcomePage() {
   const navigate = useNavigate()
   // eslint-disable-next-line no-unused-vars
-  const [admin, setAdmin] = useLocalStorage(LOCAL_STORAGE_KEYS.ADMIN, null)
-  // eslint-disable-next-line no-unused-vars
-  const [participants, setParticipants] = useLocalStorage(LOCAL_STORAGE_KEYS.PARTICIPANTS, null)
+  const [admin, setAdmin] = useLocalStorage(LOCAL_STORAGE_KEYS.ADMIN)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -25,7 +23,6 @@ function WelcomePage() {
     }
 
     setAdmin(adminData)
-    setParticipants([adminData])
     navigate("/app/first-group")
   }
 

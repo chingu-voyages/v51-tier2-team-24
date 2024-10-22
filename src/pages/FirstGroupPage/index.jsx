@@ -1,7 +1,8 @@
 import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
 import { redirect } from "react-router-dom"
 import { FirstGroupPage } from "./FirstGroupPage"
-import { FirstGroupPageContextProvider } from "./context/FirstGroupPageContext"
+import { FirstGroupStepsContextProvider } from "./context/FirstGroupStepsContext"
+import { FirstGroupDataContextProvider } from "./context/FirstGroupDataContext"
 
 export const firstGroupPageRoute = {
   loader: () => {
@@ -14,8 +15,10 @@ export const firstGroupPageRoute = {
     return null
   },
   element: (
-    <FirstGroupPageContextProvider>
-      <FirstGroupPage />,
-    </FirstGroupPageContextProvider>
+    <FirstGroupStepsContextProvider>
+      <FirstGroupDataContextProvider>
+        <FirstGroupPage />,
+      </FirstGroupDataContextProvider>
+    </FirstGroupStepsContextProvider>
   ),
 }

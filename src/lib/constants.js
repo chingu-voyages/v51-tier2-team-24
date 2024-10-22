@@ -14,7 +14,7 @@ export const FIRST_GROUP_STEPS = [
   },
   {
     id: "third",
-    title: "Add Expenses",
+    title: "Add First Expense",
     description:
       "Start adding the expenses for the group. You can assign amounts and categorize the expenses for easy tracking.",
   },
@@ -29,5 +29,6 @@ export const FIRST_GROUP_STEPS = [
 export const LOCAL_STORAGE_KEYS = {
   ADMIN: "admin",
   GROUPS: "groupsData",
-  PARTICIPANTS: "participantsData",
+  // TODO friends implementation
+  FRIENDS: "friends",
 }

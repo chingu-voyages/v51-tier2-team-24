@@ -6,7 +6,7 @@ import { useLocalStorage } from "@uidotdev/usehooks"
 import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
 
 export function SidenavLists() {
-  const [groups] = useLocalStorage(LOCAL_STORAGE_KEYS.GROUPS, null)
+  const [groups] = useLocalStorage(LOCAL_STORAGE_KEYS.GROUPS)
 
   return (
     <>
@@ -38,7 +38,7 @@ export function SidenavLists() {
         <section className="pl-4">
           <h2 className="font-bold mb-4">Your recent groups</h2>
           <ul className="space-y-2">
-            {groups.map((group) => (
+            {groups.map(({ groupDetails, ...group }) => (
               <li key={group.id}>
                 <NavLink
                   to={`/app/groups/${group.id}`}
@@ -52,12 +52,12 @@ export function SidenavLists() {
                   }
                 >
                   <Avatar className="size-8">
-                    <AvatarImage src={group.avatar} />
+                    <AvatarImage src={group.avatar || null} />
                     <AvatarFallback className="bg-slate-300 text-foreground">
-                      {getInitials(group.name)}
+                      {getInitials(groupDetails.name)}
                     </AvatarFallback>
                   </Avatar>
-                  {group.name}
+                  {groupDetails.name}
                 </NavLink>
               </li>
             ))}

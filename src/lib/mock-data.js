@@ -1,11 +1,5 @@
 import PropTypes from "prop-types"
 
-export const ADMIN_MOCK_DATA = {
-  firstName: "Alex",
-  lastName: "Norman",
-  email: "alex@norman.com",
-}
-
 export const EXPENSE_GROUP_CATEGORIES_MOCK = [
   "Food & Drinks",
   "Travel",
@@ -95,7 +89,7 @@ export const EXPENSES_MOCK_DATA = [
 export const ParticipantType = PropTypes.shape({
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
-  avatarUrl: PropTypes.string.isRequired,
+  avatarUrl: PropTypes.string,
   id: PropTypes.string.isRequired,
   balance: PropTypes.number.isRequired,
 })

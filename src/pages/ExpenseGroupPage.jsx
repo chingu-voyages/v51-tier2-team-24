@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { useParams } from "react-router-dom"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, Plus, Minus } from "lucide-react"
 import { cn, formatCurrency } from "@/lib/utils"
-import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +14,7 @@ import GridCard from "@/components/GridCard"
 import { PageGrid } from "@/components/PageGrid"
 import { CardAction } from "@/components/CardAction"
 import PropTypes from "prop-types"
-import { EXPENSES_MOCK_DATA, PARTICIPANTS_MOCK_DATA, ParticipantType } from "@/lib/mock-data"
+import { ParticipantType } from "@/lib/mock-data"
 import { ChartPie } from "@/components/ChartPie"
 import { ChartBar } from "@/components/ChartBar"
 import { ResponsiveDialog } from "@/components/ResponsiveDialog"
@@ -24,20 +24,17 @@ import { Alert } from "@/components/Alert"
 import { ExpenseForm } from "@/components/forms/ExpenseForm"
 import { Heading } from "@/components/Typography"
 import { ExpensesList } from "@/components/ExpensesList"
+import { useLocalStorage } from "@uidotdev/usehooks"
+import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
 
 export function ExpenseGroupPage() {
-  // TODO remove the bottom disablers after the getting data functionality is done
-  // eslint-disable-next-line no-unused-vars
   const { groupId } = useParams()
   // eslint-disable-next-line no-unused-vars
-  const [groupInfo, setGroupInfo] = useState({
-    name: "Bali Trip",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    totalBudget: 5000,
-  })
-  const [participants, setParticipants] = useState([])
+  const [groups, setGroups] = useLocalStorage(LOCAL_STORAGE_KEYS.GROUPS, () =>
+    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.GROUPS))
+  )
 
-  // get expense group data by groupId
+  const [groupData] = groups.filter((group) => group.id === groupId)
 
   const handleEditAction = () => {
     console.log("Edit")
@@ -51,46 +48,17 @@ export function ExpenseGroupPage() {
     console.log("Export")
   }
 
-  function getGroup() {
-    // const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
-    const groupsData = JSON.parse(localStorage.getItem("groupsData"))
-
-    const groupData = groupsData.filter((group) => {
-      return group.id === groupId
-    })
-
-    setGroupInfo(groupData[0])
-  }
-
-  function getParticipants() {
-    if (!groupInfo) return
-
-    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || []
-    const participantIds = groupInfo.participantIds || []
-
-    const matchedParticipants = participantsData.filter((participant) => {
-      return participantIds.includes(participant.id)
-    })
-
-    setParticipants(matchedParticipants)
-  }
-
-  useEffect(() => {
-    getGroup()
-    getParticipants()
-    // console.log(groupInfo)
-  }, [])
-
-  function handleExpenseSubmit() {
-    return console.log("clicked")
-  }
-
   return (
     <>
-      <h1 className="sr-only">{groupInfo.name} Management</h1>
+      <h1 className="sr-only">{groupData.groupDetails.name} Management</h1>
       <GroupInfoWidget
         className="mb-10 md:mb-12 relative"
-        groupInfo={groupInfo}
+        groupInfo={{
+          name: groupData.groupDetails.name,
+          description: groupData.groupDetails.description,
+          totalBudget: groupData.groupDetails.totalBudget,
+          category: groupData.groupDetails.category,
+        }}
         actions={
           <Popover>
             <PopoverTrigger asChild>
@@ -136,46 +104,37 @@ export function ExpenseGroupPage() {
           <TabsTrigger className="w-full" value="participants">
             Participants
           </TabsTrigger>
-          {/* Temporaly removed, because this tab has a low priority */}
-          {/* <TabsTrigger className="w-full" value="receipts">
-            Receipts
-          </TabsTrigger> */}
         </TabsList>
-        <TabsContent value="balances">
-          <Balances />
+        <TabsContent value="balances" className="space-y-10 md:space-y-12">
+          <Balances participants={groupData.participants} />
+          <div className="flex flex-row  justify-between">
+            <Heading>Expenses</Heading>
+            <ResponsiveDialog
+              dialogTitle="Add new expense"
+              trigger={<Button className="mb-6 self-end">Add Expense</Button>}
+            >
+              <ExpenseForm onSubmit={(e) => e.preventDefault()} />
+            </ResponsiveDialog>
+          </div>
+          <ExpensesList expenses={groupData.expenses} />
         </TabsContent>
         <TabsContent value="statistics">
           <Statistics />
         </TabsContent>
         <TabsContent value="participants">
-          <Participants />
+          <Participants participants={groupData.participants} />
         </TabsContent>
-        {/* Temporaly removed, because this tab has a low priority */}
-        {/* <TabsContent value="receipts">Receipts content </TabsContent> */}
       </Tabs>
-      <>
-        <div className="flex flex-row  justify-between">
-          <Heading>Expenses</Heading>
-          <ResponsiveDialog
-            dialogTitle="Add new expense"
-            trigger={<Button className="mb-6 self-end">Add Expense</Button>}
-          >
-            <ExpenseForm onSubmit={handleExpenseSubmit} />
-          </ResponsiveDialog>
-        </div>
-        <ExpensesList expenses={EXPENSES_MOCK_DATA} />
-      </>
     </>
   )
 }
 
 // TABS CONTENT
 
-const Balances = () => {
-  // Automatically calculate and display who owes what to whom within the group and taking into account the weighted contributions of a participant or the weighted contribution of a participant to an individual expense. It will depend on the data structure.
+const Balances = ({ participants }) => {
   return (
     <PageGrid tag="ul">
-      {PARTICIPANTS_MOCK_DATA.map((particpant, index) => (
+      {participants.map((particpant, index) => (
         <li className="w-full" key={index}>
           <BalanceCard participant={particpant} />
         </li>
@@ -264,28 +223,18 @@ BalanceBadge.propTypes = {
   amount: PropTypes.number.isRequired,
 }
 
-const Participants = () => {
-  const handleAddParticipant = (event) => {
-    event.preventDefault()
-    console.log("handleAddParticipant: Submit from Participants Tab")
-  }
-
-  const handleAddParticipantExpense = (event) => {
-    event.preventDefault()
-    console.log("handleAddParticipantExpense: Submit from Participants Tab")
-  }
-
+const Participants = ({ participants }) => {
   return (
     <div className="pt-4 flex flex-col">
       <ResponsiveDialog
         dialogTitle="Add Participant"
         trigger={<Button className="mb-6 self-end">Add Participant</Button>}
       >
-        <ParticipantForm showParticipantsPreview={false} onSubmit={handleAddParticipant} />
+        <ParticipantForm showParticipantsPreview={false} onSubmit={(e) => e.preventDefault()} />
       </ResponsiveDialog>
 
       <PageGrid tag="ul">
-        {PARTICIPANTS_MOCK_DATA.map((participant) => (
+        {participants.map((participant) => (
           <li key={participant.id}>
             <GridCard
               name={{
@@ -300,7 +249,7 @@ const Participants = () => {
                     dialogDescription="Add a new expense made by this participant"
                     trigger={<CardAction className="border-current">Add Expense</CardAction>}
                   >
-                    <ExpenseForm onSubmit={handleAddParticipantExpense} />
+                    <ExpenseForm onSubmit={(e) => e.preventDefault()} />
                   </ResponsiveDialog>
                   <Alert
                     trigger={

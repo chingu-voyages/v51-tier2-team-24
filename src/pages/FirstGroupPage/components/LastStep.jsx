@@ -1,64 +1,15 @@
 import { BodyText, Heading } from "@/components/Typography"
-import { useFirstGroupPageContext } from "../hooks/useFirstGroupPageContext"
+import { useFirstGroupStepsContext } from "../hooks/useFirstGroupStepsContext"
 import { StepActions } from "../FirstGroupPage"
-import { EXPENSES_MOCK_DATA, PARTICIPANTS_MOCK_DATA } from "@/lib/mock-data"
 import { ExpensesList } from "@/components/ExpensesList"
 import { GroupInfoWidget } from "@/components/GroupInfoWidget"
 import { SelectedParticipantsList } from "@/components/SelectedParticipantsList"
-import { useEffect, useState } from "react"
+import { useFirstGroupDataContext } from "../hooks/useFirstGroupDataContext"
 
 export function LastStep() {
-  const { useStepper } = useFirstGroupPageContext()
+  const { useStepper } = useFirstGroupStepsContext()
   const stepper = useStepper()
-
-  const [group, setGroup] = useState(null)
-  const [participants, setParticipants] = useState([])
-  const [expenses, setExpenses] = useState([])
-
-  function getGroup() {
-    const groupsData = JSON.parse(localStorage.getItem("groupsData"))
-    const currentGroupId = JSON.parse(localStorage.getItem("currentGroup"))
-
-    const currentGroup = groupsData.find((group) => group.id === currentGroupId)
-
-    setGroup(currentGroup)
-  }
-
-  function getParticipants() {
-    if (!group) return
-
-    const participantsData = JSON.parse(localStorage.getItem("participantsData")) || []
-    const participantIds = group.participantIds || []
-
-    const matchedParticipants = participantsData.filter((participant) => {
-      return participantIds.includes(participant.id)
-    })
-
-    setParticipants(matchedParticipants)
-  }
-
-  function getExpenses() {
-    if (!group) return
-
-    const expensesData = JSON.parse(localStorage.getItem("expensesData")) || []
-    const expenseIds = group.expenseIds || []
-
-    const matchedExpenses = expensesData.filter((expense) => {
-      return expenseIds.includes(expense.id)
-    })
-    setExpenses(matchedExpenses)
-  }
-
-  useEffect(() => {
-    getGroup()
-    getExpenses()
-  }, [])
-
-  useEffect(() => {
-    if (group) {
-      getParticipants()
-    }
-  }, [group])
+  const { groupDetails, participants, expenses } = useFirstGroupDataContext()
 
   return (
     <div className="space-y-10 md:space-y-12">
@@ -71,16 +22,15 @@ export function LastStep() {
         </BodyText>
       </div>
 
-      {group ? (
+      {groupDetails && (
         <GroupInfoWidget
           groupInfo={{
-            name: group.name,
-            description: group.description,
-            totalBudget: group.totalBudget,
+            name: groupDetails.name,
+            description: groupDetails.description,
+            totalBudget: groupDetails.totalBudget,
+            category: groupDetails.category,
           }}
         />
-      ) : (
-        <p>Loading data....</p>
       )}
 
       <section>
@@ -88,12 +38,12 @@ export function LastStep() {
         <SelectedParticipantsList participants={participants} />
       </section>
 
-      {expenses ? (
+      {expenses.length > 0 && (
         <section>
           <Heading tag="h3">Expenses</Heading>
           <ExpensesList expenses={expenses} />
         </section>
-      ) : null}
+      )}
 
       <StepActions />
     </div>

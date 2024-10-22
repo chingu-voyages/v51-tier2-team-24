@@ -6,7 +6,8 @@ import { BodyText } from "@/components/Typography"
 import PropTypes from "prop-types"
 import { ParticipantType } from "@/lib/mock-data"
 
-export function SelectedParticipantsList({ participants }) {
+// eslint-disable-next-line react/prop-types
+export function SelectedParticipantsList({ participants, onDelete }) {
   return (
     <ul className="flex gap-4 flex-wrap items-center">
       {participants.map((participant) => (
@@ -23,7 +24,14 @@ export function SelectedParticipantsList({ participants }) {
               tag="span"
               className="font-semibold leading-none mb-0"
             >{`${participant.firstName} ${participant.lastName}`}</BodyText>
-            <Button disabled size="icon" variant="ghost" className="rounded-full group">
+            <Button
+              // TODO Toast message: you cannot delete yourself
+              disabled={participant.role === "admin"}
+              onClick={() => onDelete(participant.id)}
+              size="icon"
+              variant="ghost"
+              className="rounded-full group"
+            >
               <span className="sr-only">delete</span>
               <Delete className="size-4 group-hover:text-red-600" />
             </Button>

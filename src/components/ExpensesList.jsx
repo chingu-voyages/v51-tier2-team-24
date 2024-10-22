@@ -12,10 +12,11 @@ import { Button } from "./ui/button"
 import { ImageOff, ZoomIn } from "lucide-react"
 import { Input } from "./ui/input"
 import { ExpenseType } from "@/lib/mock-data"
+import { format } from "date-fns"
 
 export function ExpensesList({ expenses }) {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible defaultValue={expenses[0].id}>
       {expenses.map((expense) => (
         <AccordionItem
           key={expense.id}
@@ -36,7 +37,7 @@ export function ExpensesList({ expenses }) {
                 tag="span"
                 aria-hidden
               >
-                {expense.date.getFullYear()}
+                {format(new Date(expense.date), "MMM dd")}
               </BodyText>
             </div>
             <BodyText
@@ -58,24 +59,27 @@ export function ExpensesList({ expenses }) {
   )
 }
 
-const ExpenseDetails = ({ expense }) => (
-  <div className="description-list">
-    <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 [&>dt]:font-bold md:text-base">
-      <dt>Description</dt>
-      <dd>{expense.description}</dd>
-      <dt>Category</dt>
-      <dd>{expense.category}</dd>
-      <dt>Amount</dt>
-      <dd>{formatCurrency(expense.amount)}</dd>
-      <dt>Purchaser</dt>
-      <dd>{expense.purchaser}</dd>
-      <dt>Contribution Weight</dt>
-      <dd>{expense.contributionWeight}%</dd>
-      <dt>Purchase date</dt>
-      <dd>23 Jan 2024 {/* The actual date will be formated with date-fns */}</dd>
-    </dl>
-  </div>
-)
+const ExpenseDetails = ({ expense }) => {
+  return (
+    <div className="description-list">
+      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 [&>dt]:font-bold md:text-base">
+        <dt>Description</dt>
+        <dd>{expense.description}</dd>
+        <dt>Category</dt>
+        <dd>{expense.category}</dd>
+        <dt>Amount</dt>
+        <dd>{formatCurrency(expense.amount)}</dd>
+        <dt>Purchaser</dt>
+        {/* TODO replace with actual name */}
+        <dd>{expense.purchaser}</dd>
+        <dt>Contribution Weight</dt>
+        <dd>{expense.contributionWeight}%</dd>
+        <dt>Purchase date</dt>
+        <dd>{format(new Date(expense.date), "dd MMM yyyy")}</dd>
+      </dl>
+    </div>
+  )
+}
 
 const ExpenseReceipt = ({ receiptUrl }) => (
   <div className="receipt-container w-full h-full max-w-[22.5rem] sm:w-3/4 bg-slate-200 p-2 self-center md:self-auto md:-order-1 relative">
