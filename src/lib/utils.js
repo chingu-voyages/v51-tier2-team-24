@@ -1,7 +1,7 @@
 import { clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { storage } from "@/FirebaseConfig"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs))
@@ -30,18 +30,21 @@ export function formatCurrency(number) {
   }).format(number)
 }
 
-
 export const uploadReceipt = async (file) => {
-  if(!file) return;
+  if (!file) return
 
   const storageRef = ref(storage, `images/${file.name}`)
-  try{
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    return downloadURL;
+  try {
+    await uploadBytes(storageRef, file)
+    const downloadURL = await getDownloadURL(storageRef)
+    return downloadURL
   } catch (error) {
-    console.log('Error uploading file:', error);
+    console.log("Error uploading file:", error)
   }
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 /* 
@@ -63,7 +66,7 @@ export function getNameDetails(name) {
       .join("")
       .toUpperCase()
   } else if (typeof name === "object" && name.firstName && name.lastName) {
-    fullName = `${name.firstName} ${name.lastName}`.trim()
+    fullName = `${capitalize(name.firstName)} ${capitalize(name.lastName)}`.trim()
     initials = (name.firstName[0] + name.lastName[0]).toUpperCase()
   } else {
     throw new Error("Invalid name format")

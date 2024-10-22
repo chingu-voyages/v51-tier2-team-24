@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom"
 import AppLayout from "./pages/layouts/AppLayout"
-import WelcomePage from "./pages/Welcome-Page"
 import { ExpenseGroupPage } from "./pages/ExpenseGroupPage"
 import { ExpenseGroupEditPage } from "./pages/ExpenseGroupEditPage"
 import { ExpenseGroupsPage } from "./pages/ExpenseGroupsPage"
@@ -9,15 +8,15 @@ import { ExpenseGroupsNewPage } from "./pages/ExpenseGroupsNewPage"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import RootErrorPage from "./pages/RootErrorPage"
 import Dashboard from "./pages/Dashboard"
-import { FirstGroupPage } from "./pages/FirstGroupPage/FirstGroupPage"
-import { FirstGroupPageContextProvider } from "./pages/FirstGroupPage/context/FirstGroupPageContext"
+import { welcomePageRoute } from "./pages/WelcomePage"
+import { firstGroupPageRoute } from "./pages/FirstGroupPage"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     errorElement: <RootErrorPage />,
     children: [
-      { index: true, element: <WelcomePage /> },
+      { index: true, ...welcomePageRoute },
       {
         element: <AppLayout />,
         children: [
@@ -58,11 +57,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "first-group",
-                element: (
-                  <FirstGroupPageContextProvider>
-                    <FirstGroupPage />
-                  </FirstGroupPageContextProvider>
-                ),
+                ...firstGroupPageRoute,
               },
             ],
           },

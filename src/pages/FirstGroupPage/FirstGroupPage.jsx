@@ -5,14 +5,15 @@ import React from "react"
 import PropTypes from "prop-types"
 import { BodyText, Heading } from "@/components/Typography"
 import { FIRST_GROUP_STEPS } from "@/lib/constants"
-import { useFirstGroupPageContext } from "./hooks/useFirstGroupPageContext"
+import { useFirstGroupStepsContext } from "./hooks/useFirstGroupStepsContext"
 import { AddGroupDetailsStep } from "./components/AddGroupDetailsStep"
 import { AddParticipantsStep } from "./components/AddParticipantsStep"
-import { AddExpensesStep } from "./components/AddExpensesStep"
+import { AddExpenseStep } from "./components/AddExpenseStep"
 import { LastStep } from "./components/LastStep"
+import { useFirstGroupDataContext } from "./hooks/useFirstGroupDataContext"
 
 export function FirstGroupPage() {
-  const { Scoped } = useFirstGroupPageContext()
+  const { Scoped } = useFirstGroupStepsContext()
 
   return (
     <>
@@ -27,7 +28,7 @@ export function FirstGroupPage() {
 }
 
 const Steps = () => {
-  const { useStepper } = useFirstGroupPageContext()
+  const { useStepper } = useFirstGroupStepsContext()
   const stepper = useStepper()
 
   return (
@@ -87,7 +88,7 @@ const Steps = () => {
 }
 
 const StepsContent = ({ className, isCurrentStep, isStepBeforeLast, variant = "default" }) => {
-  const { useStepper } = useFirstGroupPageContext()
+  const { useStepper } = useFirstGroupStepsContext()
   const stepper = useStepper()
 
   return variant === "vertical" ? (
@@ -105,7 +106,7 @@ const StepsContent = ({ className, isCurrentStep, isStepBeforeLast, variant = "d
             <AddParticipantsStep />
           ))}
           {stepper.when("third", () => (
-            <AddExpensesStep />
+            <AddExpenseStep />
           ))}
         </div>
       )}
@@ -122,7 +123,7 @@ const StepsContent = ({ className, isCurrentStep, isStepBeforeLast, variant = "d
       ))}
 
       {stepper.when("third", () => (
-        <AddExpensesStep />
+        <AddExpenseStep />
       ))}
 
       {stepper.when("last", () => (
@@ -133,8 +134,9 @@ const StepsContent = ({ className, isCurrentStep, isStepBeforeLast, variant = "d
 }
 
 export const StepActions = ({ className, isWithinForm = false }) => {
-  const { useStepper } = useFirstGroupPageContext()
+  const { useStepper } = useFirstGroupStepsContext()
   const stepper = useStepper()
+  const { createFirstGroup } = useFirstGroupDataContext()
 
   return (
     <div className={cn("flex items-center gap-4 justify-between", className)}>
@@ -166,7 +168,9 @@ export const StepActions = ({ className, isWithinForm = false }) => {
         <Button onClick={stepper.reset} type="button">
           Reset
         </Button>
-        <Button type="button">Finish</Button>
+        <Button onClick={createFirstGroup} type="button">
+          Finish
+        </Button>
       </div>
     </div>
   )

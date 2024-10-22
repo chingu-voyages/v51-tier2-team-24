@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { NAV_LINKS } from "@/lib/nav-links"
-import { cn } from "@/lib/utils"
+import { cn, getNameDetails } from "@/lib/utils"
 import { NavLink } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -22,9 +22,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import AdminForm from "@/components/forms/AdminForm"
-import { ADMIN_MOCK_DATA } from "@/lib/mock-data"
+import { useLocalStorage } from "@uidotdev/usehooks"
+import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
 
 export function TabletNavigation() {
+  const [admin] = useLocalStorage(LOCAL_STORAGE_KEYS.ADMIN)
+  const { fullName, initials } = getNameDetails({
+    firstName: admin.firstName,
+    lastName: admin.lastName,
+  })
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const openDialog = () => {
@@ -62,7 +69,7 @@ export function TabletNavigation() {
               <Button className="rounded-full" variant="ghost" size="icon">
                 <Avatar>
                   <AvatarImage src="#" />
-                  <AvatarFallback className="bg-slate-300">AN</AvatarFallback>
+                  <AvatarFallback className="bg-slate-300">{initials}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -70,7 +77,7 @@ export function TabletNavigation() {
               <DropdownMenuItem className="flex items-center gap-2" onSelect={openDialog}>
                 <div className="flex items-center gap-1">
                   <UserSettingsIcon className="size-5" />
-                  <span className="text-base font-bold">Admin Name</span>
+                  <span className="text-base font-bold">{fullName}</span>
                   <Pencil className="size-4" />
                 </div>
               </DropdownMenuItem>
@@ -90,7 +97,7 @@ export function TabletNavigation() {
               Make changes to your admin profile here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
-          <AdminForm defaultValues={ADMIN_MOCK_DATA} />
+          <AdminForm defaultValues={admin} />
         </DialogContent>
       </Dialog>
     </>

@@ -6,12 +6,14 @@ import { cn, getNameDetails } from "@/lib/utils"
 import PropTypes from "prop-types"
 import { ResponsiveDialog } from "./ResponsiveDialog"
 import AdminForm from "./forms/AdminForm"
-import { ADMIN_MOCK_DATA } from "@/lib/mock-data"
+import { useLocalStorage } from "@uidotdev/usehooks"
+import { LOCAL_STORAGE_KEYS } from "@/lib/constants"
 
 export function AdminCard({ className }) {
+  const [admin] = useLocalStorage(LOCAL_STORAGE_KEYS.ADMIN)
   const { fullName, initials } = getNameDetails({
-    firstName: ADMIN_MOCK_DATA.firstName,
-    lastName: ADMIN_MOCK_DATA.lastName,
+    firstName: admin.firstName,
+    lastName: admin.lastName,
   })
   return (
     <Card className={cn("p-2 border flex items-center gap-4", className)}>
@@ -29,7 +31,7 @@ export function AdminCard({ className }) {
           </Button>
         }
       >
-        <AdminForm defaultValues={ADMIN_MOCK_DATA} />
+        <AdminForm defaultValues={admin} />
       </ResponsiveDialog>
     </Card>
   )

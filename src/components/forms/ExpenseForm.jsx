@@ -1,6 +1,7 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+/* eslint-disable react/prop-types */
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
   SelectContent,
@@ -8,35 +9,18 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import PropTypes from "prop-types";
-import { Button } from "../ui/button";
-import {
-  EXPENSE_CATEGORIES_MOCK,
-  PARTICIPANTS_MOCK_DATA,
-} from "@/lib/mock-data";
-import { useEffect, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon, Percent } from "lucide-react";
-import { format } from "date-fns";
-import { Calendar } from "../ui/calendar";
-import { CONTRIBUTION_WEIGHTS } from "@/lib/constants";
+} from "@/components/ui/select"
+import PropTypes from "prop-types"
+import { Button } from "../ui/button"
+import { EXPENSE_CATEGORIES_MOCK } from "@/lib/mock-data"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { cn } from "@/lib/utils"
+import { CalendarIcon, Percent } from "lucide-react"
+import { format } from "date-fns"
+import { Calendar } from "../ui/calendar"
+import { CONTRIBUTION_WEIGHTS } from "@/lib/constants"
 
-// TODO add default values prop (needed in case of edit
-export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
-  const [participants, setParticipants] = useState([]);
-
-  useEffect(() => {
-    const participantsData = JSON.parse(
-      localStorage.getItem("participantsData")
-    );
-
-    if (participantsData) {
-      setParticipants(participantsData);
-    }
-  }, []);
-
+export function ExpenseForm({ participants, onSubmit, actions, className, date, setDate }) {
   return (
     <form
       className={cn("flex flex-col gap-4 md:grid md:grid-cols-2", className)}
@@ -44,19 +28,19 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
     >
       <Label className="md:col-span-full">
         <span className="sr-only">Expense name</span>
-        <Input name="expenseName" type="text" placeholder="Name" />
+        <Input name="expenseName" type="text" placeholder="Name" required />
       </Label>
       <Label className="col-span-full">
         <span className="sr-only">Expense description</span>
-        <Textarea name="expenseDescription" placeholder="Description" />
+        <Textarea name="expenseDescription" placeholder="Description" required />
       </Label>
       <Label>
         <span className="sr-only">Expense amount</span>
-        <Input name="expenseAmount" type="number" placeholder="Amount" />
+        <Input name="expenseAmount" type="number" placeholder="Amount" required />
       </Label>
       <Label>
         <span className="sr-only">Expense category</span>
-        <Select name="expenseCategory">
+        <Select name="expenseCategory" required>
           <SelectTrigger>
             <SelectValue placeholder="Category" />
           </SelectTrigger>
@@ -73,17 +57,14 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
       </Label>
       <Label>
         <span className="sr-only">Select Purchaser</span>
-        <Select name="expensePurchaser">
+        <Select name="expensePurchaser" required>
           <SelectTrigger>
             <SelectValue placeholder="Purchaser" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               {participants.map((participant) => (
-                <SelectItem
-                  key={participant.id}
-                  value={participant.firstName + " " + participant.lastName}
-                >
+                <SelectItem key={participant.id} value={participant.id}>
                   {participant.firstName + " " + participant.lastName}
                 </SelectItem>
               ))}
@@ -111,32 +92,25 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
           </SelectContent>
         </Select>
       </Label>
-      <Popover className="date-picker">
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            className={cn(
-              "justify-start md:self-end",
-              !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Purchase date</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="p-0">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
       <Label>
-        <span className="inline-block mb-2">
-          Receipt proof (can be uploaded later)
-        </span>
+        <span className="inline-block mb-2 w-full">Purchase date</span>
+        <Popover className="date-picker">
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn("justify-start md:self-end", !date && "text-muted-foreground")}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Purchase date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="p-0">
+            <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+          </PopoverContent>
+        </Popover>
+      </Label>
+      <Label>
+        <span className="inline-block mb-2 w-full">Receipt proof (can be uploaded later)</span>
         <Input name="expenseReceipt" type="file" />
       </Label>
       {actions ? (
@@ -147,7 +121,7 @@ export function ExpenseForm({ onSubmit, actions, className, date, setDate }) {
         </Button>
       )}
     </form>
-  );
+  )
 }
 
 ExpenseForm.propTypes = {
@@ -155,6 +129,5 @@ ExpenseForm.propTypes = {
   actions: PropTypes.node,
   date: PropTypes.instanceOf(Date),
   setDate: PropTypes.func,
-  // defaultValues: PropsTypes.
   className: PropTypes.string,
-};
+}
