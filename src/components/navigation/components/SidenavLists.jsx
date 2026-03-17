@@ -1,8 +1,8 @@
-import { NAV_LINKS } from "@/lib/nav-links"
-import { NavLink } from "react-router-dom"
-import { cn, getInitials } from "@/lib/utils"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useEffect, useState } from "react"
+import { NAV_LINKS } from "@/lib/nav-links";
+import { NavLink } from "react-router-dom";
+import { cn, getInitials } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 // const MOCK_GROUP_LIST = [
 //   { name: "Bali Trip", avatar: "#", id: "random_id_1" },
@@ -13,19 +13,17 @@ import { useEffect, useState } from "react"
 // ]
 
 export function SidenavLists() {
-
   const [groups, setGroups] = useState([]);
 
   function getGroups() {
-    const groupsData = JSON.parse(localStorage.getItem("groupsData"));
+    const groupsData = JSON.parse(localStorage.getItem("groupsData")) ?? [];
 
-    setGroups(groupsData)
+    setGroups(groupsData);
   }
 
   useEffect(() => {
     getGroups();
-  }, [])
-
+  }, []);
 
   return (
     <>
@@ -39,7 +37,7 @@ export function SidenavLists() {
                     "flex items-center gap-2 capitalize active:opacity-50 hover:text-primary transition-all duration-300",
                     {
                       "text-primary": isActive,
-                    }
+                    },
                   )
                 }
                 to={NavItem.path}
@@ -65,7 +63,7 @@ export function SidenavLists() {
                     "flex gap-4 items-center capitalize active:opacity-50 hover:text-primary transition-all duration-300",
                     {
                       "text-primary": isActive,
-                    }
+                    },
                   )
                 }
               >
@@ -82,5 +80,5 @@ export function SidenavLists() {
         </ul>
       </section>
     </>
-  )
+  );
 }
